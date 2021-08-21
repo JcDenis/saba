@@ -24,7 +24,7 @@ $this->registerModule(
 	/* Author */
 	"Jean-Christian Denis",
 	/* Version */
-	'2021.08.20.2',
+	'2021.08.20.3',
 	/* Properies */
 	array(
 		'permissions' => 'admin',

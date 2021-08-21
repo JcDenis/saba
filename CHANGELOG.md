@@ -1,6 +1,7 @@
 2021.08.20
  * update license
  * fix query
+ * change template titles to h3
 
 2013.10.28
  * Switch to Dotclear 2.6

@@ -396,7 +396,7 @@ class tplSaba
 
 		if (!empty($res)) {
 
-			return '<div class="saba_opt_otp"><h2>'.__('Filter options').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_otp"><h3>'.__('Filter options').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
@@ -420,7 +420,7 @@ class tplSaba
 			$chk = '<?php echo !empty($_ctx->saba_options["q_rev"]) ? \'checked="checked" \' : ""; ?>';
 			$res .= '<li><label><input name="q_rev" type="checkbox" value="1" '.$chk.'/> '.__('Reverse order').'</label></li>';
 
-			return '<div class="saba_opt_order"><h2>'.__('Filter order').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_order"><h3>'.__('Filter order').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
@@ -444,7 +444,7 @@ class tplSaba
 
 		if (!empty($res)) {
 
-			return '<div class="saba_opt_cat"><h2>'.__('Filter by category').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_cat"><h3>'.__('Filter by category').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
@@ -468,7 +468,7 @@ class tplSaba
 
 		if (!empty($res)) {
 
-			return '<div class="saba_opt_type"><h2>'.__('Filter by type').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_type"><h3>'.__('Filter by type').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
@@ -485,7 +485,7 @@ class tplSaba
 
 		if (!empty($res)) {
 
-			return '<div class="saba_opt_age"><h2>'.__('Filter by age').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_age"><h3>'.__('Filter by age').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
@@ -509,7 +509,7 @@ class tplSaba
 
 		if (!empty($res)) {
 
-			return '<div class="saba_opt_user"><h2>'.__('Filter by author').'</h2><ul>'.$res.'</ul></div>';
+			return '<div class="saba_opt_user"><h3>'.__('Filter by author').'</h3><ul>'.$res.'</ul></div>';
 		}
 	}
 
