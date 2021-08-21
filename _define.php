@@ -12,25 +12,19 @@
 # -- END LICENSE BLOCK ------------------------------------
 
 if (!defined('DC_RC_PATH')) {
-
-	return null;
+    return null;
 }
 
 $this->registerModule(
-	/* Name */
-	"saba",
-	/* Description*/
-	"Search across blog's archive",
-	/* Author */
-	"Jean-Christian Denis",
-	/* Version */
-	'2021.08.20.3',
-	/* Properies */
-	array(
-		'permissions' => 'admin',
-		'type' => 'plugin',
-		'dc_min' => '2.6',
-		'support' => 'http://jcd.lv/q=saba',
-		'details' => 'http://plugins.dotaddict.org/dc2/details/saba'
-	)
+    'saba',
+    'Search across blog archive',
+    'Jean-Christian Denis and Contributors',
+    '2021.08.20.5',
+    [
+        'permissions' => 'admin',
+        'type'          => 'plugin',
+        'dc_min'        => '2.18',
+        'support'       => 'https://github.com/JcDenis/saba',
+        'details'       => 'https://plugins.dotaddict.org/dc2/details/saba'
+    ]
 );

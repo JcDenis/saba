@@ -13,7 +13,7 @@ show related entries to visitor.
  saba requires: 
 
   * administrator permissions
-  * Dotclear 2.6 
+  * Dotclear 2.18 
   * Custom templates if default theme is not used.
 
 ## USAGE
@@ -27,3 +27,9 @@ go to ''configure plugin'', fill in form.
 If you use a custom theme (not Dotclear's default theme) 
 you must create custom templates that match yours. 
 You can find exemple in saba/default-tempaltes.
+
+## MORE
+
+ * License : GNU GPL v2
+ * Source & contribution : [GitHub Page](https://github.com/JcDenis/saba)
+ * Packages & details:  [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/saba)

@@ -2,6 +2,7 @@
  * update license
  * fix query
  * change template titles to h3
+ * move to PSR-2 coding style and short array
 
 2013.10.28
  * Switch to Dotclear 2.6
