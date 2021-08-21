@@ -3,8 +3,7 @@
 #
 # This file is part of saba, a plugin for Dotclear 2.
 # 
-# Copyright (c) 2009-2013 Jean-Christian Denis and contributors
-# contact@jcdenis.fr
+# Copyright (c) 2009-2021 Jean-Christian Denis and contributors
 # 
 # Licensed under the GPL version 2.0 license.
 # A copy of this license is available in LICENSE file or at
@@ -25,7 +24,7 @@ $this->registerModule(
 	/* Author */
 	"Jean-Christian Denis",
 	/* Version */
-	'2013.10.29',
+	'2021.08.20.1',
 	/* Properies */
 	array(
 		'permissions' => 'admin',
