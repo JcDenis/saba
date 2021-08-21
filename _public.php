@@ -144,7 +144,7 @@ class pubSaba
 
 			$params = array(
 				'sql'=>'',
-				'post_type' => ''
+				'post_type' => array()
 			);
 
 			# search string
@@ -194,6 +194,8 @@ class pubSaba
 					$options['q_type'][] = $v;
 					$params['post_type'][] = $v;
 				}
+			} else {
+				$params['post_type'][] = 'post';
 			}
 
 			# age
@@ -274,13 +276,8 @@ class pubSaba
 			}
 		}
 		if (!empty($OR)) {
-			$req = "AND (".implode (' OR ',$OR).") ";
-		}
-
-		# Return
-		if (!empty($req)) {
 			$p[0] = '';
-			$p[2]['sql'] = (isset($p[2]['sql']) ? $p[2]['sql'] : '').$req;
+			$p[2]['sql'] = (isset($p[2]['sql']) ? $p[2]['sql'] : '') . "AND (" . implode (' OR ', $OR) . ") ";
 		}
 	}
 }

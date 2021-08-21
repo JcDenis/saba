@@ -1,5 +1,6 @@
 2021.08.20
  * update license
+ * fix query
 
 2013.10.28
  * Switch to Dotclear 2.6
