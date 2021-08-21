@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{tpl:BlogLanguage}}" lang="{{tpl:BlogLanguage}}">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+  <meta name="ROBOTS" content="{{tpl:BlogMetaRobots robots="NOINDEX"}}" />
+  
+  <title>{{tpl:lang Search}} - {{tpl:SysSearchString encode_html="1"}} - {{tpl:BlogName encode_html="1"}}<tpl:PaginationIf start="0"> - {{tpl:lang page}} {{tpl:PaginationCurrent}}</tpl:PaginationIf></title>
+  <meta name="copyright" content="{{tpl:BlogCopyrightNotice encode_html="1"}}" />
+  <meta name="author" content="{{tpl:BlogEditor encode_html="1"}}" />
+  <meta name="date" scheme="W3CDTF" content="{{tpl:BlogUpdateDate iso8601="1"}}" />
+  
+  <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+  <meta name="dc.title" lang="{{tpl:BlogLanguage}}" content="{{tpl:lang Search}} - {{tpl:SysSearchString encode_html="1"}} - {{tpl:BlogName encode_html="1"}}<tpl:PaginationIf start="0"> - {{tpl:lang page}} {{tpl:PaginationCurrent}}</tpl:PaginationIf>" />
+  <meta name="dc.language" content="{{tpl:BlogLanguage}}" />
+  <meta name="dc.publisher" content="{{tpl:BlogEditor encode_html="1"}}" />
+  <meta name="dc.rights" content="{{tpl:BlogCopyrightNotice encode_html="1"}}" />
+  <meta name="dc.date" scheme="W3CDTF" content="{{tpl:BlogUpdateDate iso8601="1"}}" />
+  <meta name="dc.type" content="text" />
+  <meta name="dc.format" content="text/html" />
+  
+  <link rel="top" href="{{tpl:BlogURL}}" title="{{tpl:lang Home}}" />
+  <link rel="contents" href="{{tpl:BlogArchiveURL}}" title="{{tpl:lang Archives}}" />
+    
+  {{tpl:include src="_head.html"}}
+</head>
+
+<body class="dc-search<tpl:SabaIf from_error="1"> dc-404</tpl:SabaIf>">
+<div id="page">
+{{tpl:include src="_top.html"}}
+
+<div id="wrapper">
+
+<div id="main">
+  <div id="content">
+  
+  <div id="content-info">
+	<tpl:SabaIf from_error="1">
+	  <h2>{{tpl:lang Document not found}}</h2>
+	  <p>{{tpl:lang URL you've tried has typos, or the page has been deleted or moved.}}</p>
+	</tpl:SabaIf>
+	<tpl:SabaIf has_search="1" from_error="0">
+      <h2>{{tpl:lang Search across blog's archive}}</h2>
+		<tpl:SysIf search_count="==0">
+		  <p>{{tpl:SysSearchString encode_html="1" string="Your search for <em>%1$s</em> returned no result."}}</p>
+		</tpl:SysIf>
+		<tpl:SysIf search_count="==1">
+		  <p>{{tpl:SysSearchString encode_html="1" string="Your search for <em>%1$s</em> returned <strong>%2$s</strong> result."}}</p>
+		</tpl:SysIf>
+		<tpl:SysIf search_count="&gt;1">
+		  <p>{{tpl:SysSearchString encode_html="1" string="Your search for <em>%1$s</em> returned <strong>%2$s</strong> results."}}</p>
+		</tpl:SysIf>
+	</tpl:SabaIf>
+	<tpl:SabaIf has_search="0" from_error="0">
+    <form action="{{tpl:BlogURL}}" method="get" id="saba-form">
+
+	<div class="saba-opt-text">
+	 <h2><label for="q">{{tpl:lang Advanced search}}</label></h2>
+	 <p><input name="q" type="text" size="100" maxlength="255" value="{{tpl:SabaFormSearch}}" /> 
+	 <input type="submit" class="submit" value="ok" /></p>
+	</div>
+	
+	<tpl:SabaFormIf filter_options="1">{{tpl:SabaFormOptions}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_orders="1">{{tpl:SabaFormOrders remove="selected"}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_ages="1">{{tpl:SabaFormAges}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_categories="1">{{tpl:SabaFormCategories}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_authors="1">{{tpl:SabaFormAuthors}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_types="1">{{tpl:SabaFormTypes}}</tpl:SabaFormIf>
+	
+    </form>
+	</tpl:SabaIf>
+  </div>
+  
+  <div class="content-inner">
+  <tpl:SabaEntries>
+    <tpl:SabaIf from_error="1">
+      <tpl:EntriesHeader>
+		<h2>{{tpl:lang Suggested items}}</h2>
+      </tpl:EntriesHeader>
+	</tpl:SabaIf>  
+    {{tpl:include src="saba_post.html"}}
+	
+    <tpl:EntriesFooter>
+      <tpl:Pagination>
+        <p class="pagination"><tpl:PaginationIf end="0"><a href="{{tpl:SabaPaginationURL offset="+1"}}" class="prev">&#171;
+        {{tpl:lang previous entries}}</a> - </tpl:PaginationIf>
+        {{tpl:lang page}} {{tpl:PaginationCurrent}} {{tpl:lang of}} {{tpl:PaginationCounter}}
+        <tpl:PaginationIf start="0"> - <a href="{{tpl:SabaPaginationURL offset="-1"}}" class="next">{{tpl:lang next entries}}
+        &#187;</a></tpl:PaginationIf></p>
+      </tpl:Pagination>
+    </tpl:EntriesFooter>
+  </tpl:SabaEntries>
+  </div>
+  </div>
+</div> <!-- End #main -->
+
+<div id="sidebar">
+  <div id="blognav">
+
+	<tpl:SabaIf has_search="1" from_error="1" operator="or">
+
+    <form action="{{tpl:BlogURL}}" method="get" id="saba-form">
+
+	<div class="saba-opt-text">
+	 <h2><label for="q">{{tpl:lang Advanced search}}</label></h2>
+	 <p><input name="q" type="text" size="10" maxlength="255" value="{{tpl:SabaFormSearch}}" /> 
+	 <input type="submit" class="submit" value="ok" /></p>
+	</div>
+	
+	<tpl:SabaFormIf filter_options="1">{{tpl:SabaFormOptions}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_orders="1">{{tpl:SabaFormOrders remove="selected"}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_ages="1">{{tpl:SabaFormAges}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_categories="1">{{tpl:SabaFormCategories}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_authors="1">{{tpl:SabaFormAuthors}}</tpl:SabaFormIf>
+	<tpl:SabaFormIf filter_types="1">{{tpl:SabaFormTypes}}</tpl:SabaFormIf>
+		
+    </form>
+  </tpl:SabaIf>
+    {{tpl:Widgets type="nav"}}
+  </div> <!-- End #blognav -->
+  
+  <div id="blogextra">
+    {{tpl:Widgets type="extra"}}
+  </div> <!-- End #blogextra -->
+</div>
+
+</div> <!-- End #wrapper -->
+
+{{tpl:include src="_footer.html"}}
+</div> <!-- End #page -->
+</body>
+</html>

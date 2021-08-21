@@ -1,0 +1,14 @@
+<div class="saba-post">
+<h2 id="p{{tpl:EntryID}}" class="post-title" lang="{{tpl:EntryLang}}" xml:lang="{{tpl:EntryLang}}"><a
+href="{{tpl:EntryURL}}" title="{{tpl:lang Read}} {{tpl:EntryTitle encode_html="1"}}">{{tpl:EntryTitle encode_html="1"}}</a></h2>
+
+<p class="post-info">{{tpl:lang By}} {{tpl:EntryAuthorLink}} {{tpl:lang on}} {{tpl:EntryDate}} 
+<tpl:EntryIf show_comments="1">
+- <a href="{{tpl:EntryURL}}#comments">{{tpl:EntryCommentCount}}</a>
+</tpl:EntryIf>
+<tpl:EntryIf show_pings="1">
+- <a href="{{tpl:EntryURL}}#pings">{{tpl:EntryPingCount}}</a></tpl:EntryIf>
+<tpl:EntryIf has_attachment="1">
+- <a href="{{tpl:EntryURL}}#attachments">{{tpl:EntryAttachmentCount}}</a></tpl:EntryIf>
+</p>
+</div>
