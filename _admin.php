@@ -18,6 +18,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 # settings namespace
 $core->blog->settings->addNamespace('saba');
 
+# widget
+require_once dirname(__FILE__) . '/_widgets.php';
+
 # behaviors
 $core->addBehavior(
     'adminBlogPreferencesForm',
