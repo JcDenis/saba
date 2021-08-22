@@ -1,133 +1,85 @@
 # Language: Français
-# Module: saba - 2013.10.28
-# Date: 2013-10-29 08:06:53
-# Translated with translater 2013.05.11
+# Module: saba - 2021.08.21
+# Date: 2021-08-22 23:22:12
+# Translated with translater 2021.08.18
 
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: saba 2013.10.28\n"
+"Project-Id-Version: saba 2021.08.21\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-10-29T08:06:53+00:00\n"
+"PO-Revision-Date: 2021-08-22T23:22:12+00:00\n"
 "Last-Translator: Jean-Christian Denis\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: _config.php:70
-msgid "Configuration has been successfully updated."
-msgstr "La configuration a été mise à jour avec succés."
+#: _admin.php:38
+msgid "Search Across Blog Archive"
+msgstr "Rechercher dans les archives"
 
-#: _config.php:93
-msgid "Enable extension on this blog"
-msgstr "Activer l'extension sur ce blog"
+#: _admin.php:41
+msgid "Enable advanced search on this blog"
+msgstr "Activer la recherche avancée sur ce blog"
 
-#: _config.php:98
+#: _admin.php:44
+msgid "Enable suggestion for page 404"
+msgstr "Activer la suggestion sur la page 404"
+
+#: _admin.php:46
+msgid "This suggests visitors some posts on page 404."
+msgstr "Ceci suggère au visiteurs des billets sur la page 404."
+
+#: _widgets.php:18
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: _config.php:105
-msgid "Disable filter on post options"
-msgstr "Désactiver le filtre des options de billet"
+#: _widgets.php:21
+msgid "Add more search options on public side"
+msgstr "Ajoute plus d'options de recherche"
 
-#: _config.php:112
-msgid "Disable filter on order"
-msgstr "Désactiver le filtre d'ordre"
-
-#: _config.php:119
-msgid "Disable filter on age"
-msgstr "Désactiver le filtre de date"
-
-#: _config.php:126
-msgid "Disable filter on categories"
-msgstr "Désactiver le filtre de catégories"
-
-#: _config.php:133
-msgid "Disable filter on authors"
-msgstr "Désactiver le filtre d'auteurs"
-
-#: _config.php:140
+#: _widgets.php:26
 msgid "Disable filter on post types"
 msgstr "Désactiver le filtre de type de billets"
 
-#: _public.php:345
-msgid "Filter options"
-msgstr "Options du filtre"
+#: _widgets.php:30
+msgid "Hidden types:"
+msgstr "Billets cachés :"
 
-#: _public.php:365
-msgid "Reverse order"
-msgstr "Inverser l'ordre"
+#: _widgets.php:33
+msgid "Disable filter on post options"
+msgstr "Désactiver le filtre des options de billet"
 
-#: _public.php:367
-msgid "Filter order"
-msgstr "Options de tri"
+#: _widgets.php:37
+msgid "Hidden options:"
+msgstr "Options cachées :"
 
-#: _public.php:388
-msgid "Filter by category"
-msgstr "Filter par catégorie"
+#: _widgets.php:40
+msgid "Disable filter on categories"
+msgstr "Désactiver le filtre de catégories"
 
-#: _public.php:409
-msgid "Filter by type"
-msgstr "Filtrer par type"
+#: _widgets.php:44
+msgid "Hidden categories:"
+msgstr "Catégories cachées"
 
-#: _public.php:425
-msgid "Filter by age"
-msgstr "Filtrer par date"
+#: _widgets.php:47
+msgid "Disable filter on authors"
+msgstr "Désactiver le filtre d'auteurs"
 
-#: _public.php:446
-msgid "Filter by author"
-msgstr "Filtrer par auteur"
+#: _widgets.php:51
+msgid "Hidden authors:"
+msgstr "Auteurs cachés"
 
-#: _public.php:477
-msgid "With comments"
-msgstr "Avec commentaires"
+#: _widgets.php:54
+msgid "Disable filter on order"
+msgstr "Désactiver le filtre d'ordre"
 
-#: _public.php:478
-msgid "With trackbacks"
-msgstr "Avec rétroliens"
+#: _widgets.php:60
+msgid "Disable filter on age"
+msgstr "Désactiver le filtre de date"
 
-#: _public.php:490
-msgid "Comments count"
-msgstr "Nombre de commentaires"
-
-#: _public.php:491
-msgid "Trackbacks count"
-msgstr "Nombre de rétroliens"
-
-#: _public.php:498
-msgid "All"
-msgstr "Tous"
-
-#: _public.php:499
-msgid "Less than a month"
-msgstr "Moins d'un mois"
-
-#: _public.php:500
-msgid "From 1 to 6 month"
-msgstr "De 1 à 6 mois"
-
-#: _public.php:501
-msgid "From 6 to 12 month"
-msgstr "De 6 à 12 mois"
-
-#: _public.php:502
-msgid "More than a year"
-msgstr "Plus d'un an"
-
-#: _public.php:511
-msgid "Poll"
-msgstr "Sondage"
-
-#: _public.php:512
-msgid "Event"
-msgstr "Événement"
-
-msgid "Search across blog's archive"
-msgstr "Rechercher dans les archives"
-
-msgid "Please select a request and options to search on"
-msgstr "Merci de formuler une requête et les options de recherche"
-
-msgid "Suggested items"
-msgstr "Articles suggérés"
+#: default-templates/saba_404_dotty.html:22
+msgid "Suggested items:"
+msgstr "Articles suggérés :"
 

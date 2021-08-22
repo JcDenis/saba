@@ -1,8 +1,12 @@
-2021.08.20
+2021.08.21
  * update license
  * fix query
- * change template titles to h3
  * move to PSR-2 coding style and short array
+ * move config to widget
+ * move template to widget
+ * use default template for search
+ * use custom template for 404
+ * fix public translation
 
 2013.10.28
  * Switch to Dotclear 2.6

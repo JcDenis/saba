@@ -15,75 +15,23 @@ if (!defined('DC_RC_PATH')) {
     return null;
 }
 
-# Admin behaviors
+# setting
 $core->blog->settings->addNamespace('saba');
 
 if (!$core->blog->settings->saba->active) {
     return null;
 }
 
-# Register saba handler
-$core->url->register(
-    'search',
-    'search',
-    '^search(/.+)?$',
-    ['urlSaba', 'saba']
-);
+# translation
+l10n::set(dirname(__FILE__) . '/locales/' . $_lang . '/public');
 
-# Add saba templates path
+# widget
+require_once dirname(__FILE__) . '/_widgets.php';
+
+# template path
 $core->tpl->setPath(
     $core->tpl->getPath(),
     dirname(__FILE__) . '/default-templates/'
-);
-
-# templates
-$core->tpl->addBlock(
-    'SabaIf',
-    ['tplSaba', 'SabaIf']
-);
-$core->tpl->addBlock(
-    'SabaEntries',
-    ['tplSaba', 'SabaEntries']
-);
-$core->tpl->addBlock(
-    'SabaFormIf',
-    ['tplSaba', 'SabaFormIf']
-);
-$core->tpl->addValue(
-    'SabaFormSearch',
-    ['tplSaba', 'SabaFormSearch']
-);
-$core->tpl->addValue(
-    'SabaFormOptions',
-    ['tplSaba', 'SabaFormOptions']
-);
-$core->tpl->addValue(
-    'SabaFormCategories',
-    ['tplSaba', 'SabaFormCategories']
-);
-$core->tpl->addValue(
-    'SabaFormTypes',
-    ['tplSaba', 'SabaFormTypes']
-);
-$core->tpl->addValue(
-    'SabaFormAges',
-    ['tplSaba', 'SabaFormAges']
-);
-$core->tpl->addValue(
-    'SabaFormOrders',
-    ['tplSaba', 'SabaFormOrders']
-);
-$core->tpl->addValue(
-    'SabaFormAuthors',
-    ['tplSaba', 'SabaFormAuthors']
-);
-$core->tpl->addValue(
-    'SabaPaginationURL',
-    ['tplSaba', 'SabaPaginationURL']
-);
-$core->tpl->addValue(
-    'SabaURL',
-    ['tplSaba', 'SabaURL']
 );
 
 # behavior
@@ -96,12 +44,14 @@ $core->addBehavior(
     ['pubSaba', 'urlHandlerBeforeGetData']
 );
 $core->addBehavior(
-    'corePostSearch',
-    ['pubSaba', 'corePostSearch']
+    'coreBlogBeforeGetPosts',
+    ['pubSaba', 'coreBlogBeforeGetPosts']
 );
 
 # url
-$core->url->registerError(['urlSaba', 'error']);
+if ($core->blog->settings->saba->error) {
+    $core->url->registerError(['urlSaba', 'error']);
+}
 
 class pubSaba
 {
@@ -123,127 +73,15 @@ class pubSaba
     {
         global $core;
 
-        $options = [
-            'q'=> '',
-            'q_opt' => [],
-            'q_cat' => [],
-            'q_age' => '0,0',
-            'q_user'=> [],
-            'q_order'=> 'date',
-            'q_rev' => '0',
-            'q_type'=> []
-        ];
+        $options = tplSaba::getSabaDefaultPostsOptions();
 
         if (!empty($_GET['q']) && 1 < strlen($_GET['q'])) {
-            # move to saba
-            $_ctx->current_tpl = null;
-            $_ctx->current_tpl = 'saba_search.html';
-
-            # retreive _GET
-            $qs = $_SERVER['QUERY_STRING'];
-            $qs = preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
-            parse_str($qs, $get);
-
-            $params = [
-                'sql'=>'',
-                'post_type' => []
-            ];
 
             # search string
-            $params['search'] = rawurldecode($_GET['q']);
+            $params = new ArrayObject(['search' => rawurldecode($_GET['q'])]);
+
+            $options = self::getPostsParams($params);
             $options['q'] = rawurldecode($_GET['q']);
-
-            # options
-            if (!empty($get['q_opt'])) {
-            
-                if (in_array('selected', $get['q_opt'])) {
-                    $options['q_opt'][] = 'selected';
-                    $params['post_selected'] = 1;
-                }
-                if (in_array('comment', $get['q_opt'])) {
-                    $options['q_opt'][] = 'comment';
-                    $params['sql'] = "AND nb_comment > 0 ";
-                }
-                if (in_array('trackback', $get['q_opt'])) {
-                    $options['q_opt'][] = 'trackback';
-                    $params['sql'] = "AND nb_trackback > 0";
-                }
-            }
-
-            # categories
-            if (!empty($get['q_cat'])) {
-                $cats = array();
-                foreach($get['q_cat'] as $v) {
-                    $v = abs((integer) $v);
-                    if (!$v) {
-                        continue;
-                    }
-                    $cats[] = "C.cat_id = '" . $v . "'";
-                    $options['q_cat'][] = $v;
-                }
-                if (!empty($cats)) {
-                    $params['sql'] .= 'AND (' . implode(' OR ', $cats) . ') ';
-                }
-            }
-
-            # post types
-            if (!empty($get['q_type'])) {
-                $types = $core->getPostTypes();
-                foreach($get['q_type'] as $v) {
-                    if (!$types[$v]) {
-                        continue;
-                    }
-                    $options['q_type'][] = $v;
-                    $params['post_type'][] = $v;
-                }
-            } else {
-                $params['post_type'][] = 'post';
-            }
-
-            # age
-            $ages = tplSaba::getSabaFormAges();
-            if (!empty($get['q_age']) && in_array($get['q_age'], $ages)) {
-                $age = explode(',', $get['q_age']);
-                $ts = time();
-                $options['q_age'] = $get['q_age'];
-                
-                if ($age[0]) {
-                    $params['sql'] .= "AND P.post_dt < '" .
-                        dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[0]) . "' ";
-                }
-                if ($age[1]) {
-                    $params['sql'] .= "AND P.post_dt > '" .
-                        dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[1]) . "' ";
-                }
-            }
-
-            # user
-            if (!empty($get['q_user'])) {
-                $users = array();
-                foreach($get['q_user'] as $v) {
-                    $users[] = "U.user_id = '" . $core->con->escape($v) . "'";
-                    $options['q_user'][] = $v;
-                }
-                if (!empty($users)) {
-                    $params['sql'] .= 'AND (' . implode(' OR ', $users) . ') ';
-                }
-            }
-
-            #order
-            $sort = 'desc';
-            if (!empty($get['q_rev'])) {
-                $options['q_rev'] = '1';
-                $sort = 'asc';
-            }
-            $orders = tplSaba::getSabaFormOrders();
-            if (!empty($get['q_order']) && in_array($get['q_order'], $orders)) {
-
-                $options['q_order'] = $get['q_order'];
-                $params['order'] = $core->tpl->getSortByStr(
-                    ['sortby' => $get['q_order'], 'order' => $sort],
-                    'post'
-                ); //?! post_type
-            }
 
             # count
             $GLOBALS['_search'] = rawurldecode($_GET['q']);
@@ -264,13 +102,132 @@ class pubSaba
         $_ctx->saba_options = $options;
     }
 
-    # Ajouter la condition "ou" à la recherche
-    public static function corePostSearch($core, $p)
+    public static function getPostsParams($params)
     {
-        $sentences = explode(',', $p[2]['search']);
+        global $core;
+
+        if (!isset($params['sql'])) {
+            $params['sql'] = '';
+        }
+
+        $params['post_type'] = [];
+
+        # retreive _GET
+        $qs = $_SERVER['QUERY_STRING'];
+        $qs = preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
+        parse_str($qs, $get);
+
+        # search string
+        $options = tplSaba::getSabaDefaultPostsOptions();
+        $options['q'] = $params['search'];
+
+        # options
+        if (!empty($get['q_opt'])) {
+        
+            if (in_array('selected', $get['q_opt'])) {
+                $options['q_opt'][] = 'selected';
+                $params['post_selected'] = 1;
+            }
+            if (in_array('comment', $get['q_opt'])) {
+                $options['q_opt'][] = 'comment';
+                $params['sql'] = "AND nb_comment > 0 ";
+            }
+            if (in_array('trackback', $get['q_opt'])) {
+                $options['q_opt'][] = 'trackback';
+                $params['sql'] = "AND nb_trackback > 0";
+            }
+        }
+
+        # categories
+        if (!empty($get['q_cat'])) {
+            $cats = array();
+            foreach($get['q_cat'] as $v) {
+                $v = abs((integer) $v);
+                if (!$v) {
+                    continue;
+                }
+                $cats[] = "C.cat_id = '" . $v . "'";
+                $options['q_cat'][] = $v;
+            }
+            if (!empty($cats)) {
+                $params['sql'] .= 'AND (' . implode(' OR ', $cats) . ') ';
+            }
+        }
+
+        # post types
+        if (!empty($get['q_type'])) {
+            $types = $core->getPostTypes();
+            foreach($get['q_type'] as $v) {
+                if (!$types[$v]) {
+                    continue;
+                }
+                $options['q_type'][] = $v;
+                $params['post_type'][] = $v;
+            }
+        } else {
+            $params['post_type'][] = 'post';
+        }
+
+        # age
+        $ages = tplSaba::getSabaFormAges();
+        if (!empty($get['q_age']) && in_array($get['q_age'], $ages)) {
+            $age = explode(',', $get['q_age']);
+            $ts = time();
+            $options['q_age'] = $get['q_age'];
+            
+            if ($age[0]) {
+                $params['sql'] .= "AND P.post_dt < '" .
+                    dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[0]) . "' ";
+            }
+            if ($age[1]) {
+                $params['sql'] .= "AND P.post_dt > '" .
+                    dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[1]) . "' ";
+            }
+        }
+
+        # user
+        if (!empty($get['q_user'])) {
+            $users = array();
+            foreach($get['q_user'] as $v) {
+                $users[] = "U.user_id = '" . $core->con->escape($v) . "'";
+                $options['q_user'][] = $v;
+            }
+            if (!empty($users)) {
+                $params['sql'] .= 'AND (' . implode(' OR ', $users) . ') ';
+            }
+        }
+
+        #order
+        $sort = 'desc';
+        if (!empty($get['q_rev'])) {
+            $options['q_rev'] = '1';
+            $sort = 'asc';
+        }
+        $orders = tplSaba::getSabaFormOrders();
+        if (!empty($get['q_order']) && in_array($get['q_order'], $orders)) {
+
+            $options['q_order'] = $get['q_order'];
+            $params['order'] = $core->tpl->getSortByStr(
+                ['sortby' => $get['q_order'], 'order' => $sort],
+                'post'
+            ); //?! post_type
+        }
+        return $options;
+    }
+
+    # Ajouter la condition "ou" à la recherche
+    public static function coreBlogBeforeGetPosts($p)
+    {
+        global $core;
+
+        if (empty($p['search'])) {
+            return;
+        }
+
+        self::getPostsParams($p);
 
         $OR = [];
-        foreach($sentences as $sentence) {
+        foreach(explode(',', $p['search']) as $sentence) {
             $AND = [];
             $words = text::splitWords($sentence);
             foreach($words as $word) {
@@ -281,8 +238,8 @@ class pubSaba
             }
         }
         if (!empty($OR)) {
-            $p[0] = '';
-            $p[2]['sql'] = (isset($p[2]['sql']) ? $p[2]['sql'] : '') . "AND (" . implode (' OR ', $OR) . ") ";
+            $p['search'] = '';
+            $p['sql'] .= "AND (" . implode (' OR ', $OR) . ") ";
         }
     }
 }
@@ -307,232 +264,26 @@ class urlSaba extends dcUrlHandlers
             $GLOBALS['_from_error'] = true;
 
             # Serve saba
-            self::serveDocument('saba_search.html');
+            self::serveDocument('saba_404_default.html');
 
             return true;
         }
-    }
-    
-    public static function saba($args)
-    {
-        $_ctx =& $GLOBALS['_ctx'];
-        $core =& $GLOBALS['core'];
-
-        self::serveDocument('saba_search.html');
     }
 }
 
 class tplSaba
 {
-    public static function SabaEntries($a, $c)
-    {
-        return
-        '<?php if ($_ctx->exists("posts")) : while ($_ctx->posts->fetch()) : ?>'.$c.'<?php endwhile; endif; ?>';
-    }
-
-    public static function SabaFormSearch($a)
-    {
-        return '<?php echo html::escapeHTML($_ctx->saba_options["q"]); ?>';
-    }
-
-    public static function SabaIf($a, $c)
-    {
-        $if = [];
-
-        $operator = isset($a['operator']) ? $GLOBALS['core']->tpl->getOperator($a['operator']) : '&&';
-        
-        if (isset($a['has_search'])) {
-            $sign = (boolean) $a['has_search'] ? '' : '!';
-            $if[] = $sign . 'isset($_search_count)';
-        }
-
-        if (isset($a['from_error'])) {
-            $sign = (boolean) $a['from_error'] ? '' : '!';
-            $if[] = $sign . 'isset($_from_error)';
-        }
-
-        return !empty($if) ?
-            '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $c . '<?php endif; ?>'
-            : $c;
-    }
-
-    public static function SabaURL($a)
-    {
-        $f = $GLOBALS['core']->tpl->getFilters($a);
-
-        return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getBase("search")') . '; ?>';
-    }
-
-    public static function SabaFormIf($a, $c)
-    {
-        $if = [];
-
-        $operator = isset($a['operator']) ? $GLOBALS['core']->tpl->getOperator($a['operator']) : '&&';
-
-        $fl = self::getSabaFormFilters();
-        foreach($fl as $filter) {
-            if (isset($a['filter_' . $filter])) {
-                $sign = (boolean) $a['filter_' . $filter] ? '' : '!';
-                $if[] = $sign . 'tplSaba::isSabaFormFilter(\'' . $filter . '\')';
-            }
-        }
-
-        return !empty($if) ?
-            '<?php if(' . implode(' ' . $operator . ' ', $if) . ') : ?>' . $c . '<?php endif; ?>'
-            : $c;
-    }
-
-    public static function SabaFormOptions($a)
-    {
-        $dis = !empty($a['remove']) ? explode(',', $a['remove']) : [];
-
-        $res = '';
-        $li = '<li><label><input name="q_opt[]" type="checkbox" value="%s" %s/> %s</label></li>';
-
-        $rs = self::getSabaFormOptions();
-        foreach($rs as $k => $v) {
-            if (in_array($v, $dis)) {
-                continue;
-            }
-            $chk = '<?php echo in_array("' . $v . '",$_ctx->saba_options["q_opt"]) ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $v, $chk, html::escapeHTML($k));
-        }
-
-        if (!empty($res)) {
-            return '<div class="saba_opt_otp"><h3>' . __('Filter options') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaFormOrders($a)
-    {
-        $dis = !empty($a['remove']) ? explode(',',$a['remove']) : [];
-
-        $res = '';
-        $li = '<li><label><input name="q_order" type="radio" value="%s" %s/> %s</label></li>';
-
-        $rs = self::getSabaFormOrders($dis);
-        foreach($rs as $k => $v) {
-            if (in_array($v, $dis)) {
-                continue;
-            }
-            $chk = '<?php echo "' . $v . '" == $_ctx->saba_options["q_order"] ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $v, $chk, html::escapeHTML($k));
-        }
-
-        if (!empty($res)) {
-            $chk = '<?php echo !empty($_ctx->saba_options["q_rev"]) ? \'checked="checked" \' : ""; ?>';
-            $res .= '<li><label><input name="q_rev" type="checkbox" value="1" ' . $chk . '/> ' . __('Reverse order') . '</label></li>';
-
-            return '<div class="saba_opt_order"><h3>' . __('Filter order') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaFormCategories($a)
-    {
-        global $core;
-
-        $dis = !empty($a['remove']) ? explode(',', $a['remove']) : [];
-
-        $res = '';
-        $li = '<li><label><input name="q_cat[]" type="checkbox" value="%s" %s/> %s</label></li>';
-
-        $rs = $core->blog->getCategories();
-        while ($rs->fetch()) {
-            if (in_array($rs->cat_id, $dis) || in_array($rs->cat_url, $dis)) {
-                continue;
-            }
-            $chk = '<?php echo in_array("' . $rs->cat_id . '",$_ctx->saba_options["q_cat"]) ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $rs->cat_id, $chk, html::escapeHTML($rs->cat_title));
-        }
-
-        if (!empty($res)) {
-            return '<div class="saba_opt_cat"><h3>' . __('Filter by category') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaFormTypes($a)
-    {
-        global $core;
-
-        $dis = !empty($a['remove']) ? explode(',',$a['remove']) : [];
-
-        $res = '';
-        $li = '<li><label><input name="q_type[]" type="checkbox" value="%s" %s/>%s</label></li>';
-
-        $rs = self::getSabaFormTypes();
-        foreach($rs as $k => $v) {
-            if (in_array($v, $dis)) {
-                continue;
-            }
-            $chk = '<?php echo in_array("' . $v . '",$_ctx->saba_options["q_type"]) ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $v, $chk, html::escapeHTML($k));
-        }
-
-        if (!empty($res)) {
-            return '<div class="saba_opt_type"><h3>' . __('Filter by type') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaFormAges($a)
-    {
-        $res = '';
-        $li = '<li><label><input name="q_age" type="radio" value="%s" %s/> %s</label></li>';
-
-        $rs = self::getSabaFormAges();
-        foreach($rs as $k => $v) {
-            $chk = '<?php echo "' . $v . '" == $_ctx->saba_options["q_age"] ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $v, $chk, html::escapeHTML($k));
-        }
-
-        if (!empty($res)) {
-            return '<div class="saba_opt_age"><h3>' . __('Filter by age') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaFormAuthors($a)
-    {
-        global $core;
-
-        $dis = !empty($a['remove']) ? explode(',',$a['remove']) : [];
-
-        $res = '';
-        $li = '<li><label><input name="q_user[]" type="checkbox" value="%s" %s/> %s</label></li>';
-
-        $rs = $core->blog->getPostsUsers();
-        while ($rs->fetch()) {
-            if (in_array($rs->user_id, $dis)) {
-                continue;
-            }
-            $chk = '<?php echo in_array("' . $rs->user_id . '",$_ctx->saba_options["q_user"]) ? \'checked="checked" \' : ""; ?>';
-            $res .= sprintf($li, $rs->user_id, $chk, html::escapeHTML(dcUtils::getUserCN($rs->user_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname)));
-        }
-
-        if (!empty($res)) {
-            return '<div class="saba_opt_user"><h3>' . __('Filter by author') . '</h3><ul>' . $res . '</ul></div>';
-        }
-    }
-
-    public static function SabaPaginationURL($attr)
-    {
-        $offset = 0;
-        if (isset($attr['offset'])) {
-            $offset = (integer) $attr['offset'];
-        }
-    
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-
-        return '<?php echo '.sprintf($f, "ctxSaba::PaginationURL(" . $offset . ")") . '; ?>';
-    }
-
-    public static function getSabaFormFilters()
+    public static function getSabaDefaultPostsOptions()
     {
         return [
-            'options',
-            'orders',
-            'ages',
-            'categories',
-            'authors',
-            'types'
+            'q'=> '',
+            'q_opt' => [],
+            'q_cat' => [],
+            'q_age' => '0,0',
+            'q_user'=> [],
+            'q_order'=> 'date',
+            'q_rev' => '0',
+            'q_type'=> []
         ];
     }
 
@@ -590,45 +341,5 @@ class tplSaba
         }
 
         return $rs;
-    }
-
-    public static function isSabaFormFilter($f)
-    {
-        $filters = (string) $GLOBALS['core']->blog->settings->saba->filters;
-        $filters = @unserialize($filters);
-        if (!is_array($filters)) {
-            $filters = [];
-        }
-
-        return !in_array($f, $filters);
-    }
-}
-
-class ctxSaba extends context
-{
-    public static function PaginationURL($offset = 0)
-    {
-        $args = $_SERVER['URL_REQUEST_PART'];
-
-        $n = self::PaginationPosition($offset);
-
-        $args = preg_replace('#(^|/)page/([0-9]+)$#', '', $args);
-
-        $url = $GLOBALS['core']->blog->url . $args;
-
-        if ($n > 1) {
-            $url = preg_replace('#/$#', '', $url);
-            $url .= '/page/' . $n;
-        }
-
-        $qs = preg_replace('#(^|/)page/([0-9]+)(&?)#', '', $_SERVER['QUERY_STRING']);
-
-        # If search param
-        if (!empty($_GET['q'])) {
-            $s = strpos($url, '?') !== false ? '&amp;' : '?';
-            $url .= $s . $qs;
-        }
-
-        return $url;
     }
 }

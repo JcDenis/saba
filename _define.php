@@ -19,11 +19,11 @@ $this->registerModule(
     'saba',
     'Search across blog archive',
     'Jean-Christian Denis and Contributors',
-    '2021.08.20.5',
+    '2021.08.21',
     [
         'permissions' => 'admin',
         'type'          => 'plugin',
-        'dc_min'        => '2.18',
+        'dc_min'        => '2.19',
         'support'       => 'https://github.com/JcDenis/saba',
         'details'       => 'https://plugins.dotaddict.org/dc2/details/saba'
     ]
