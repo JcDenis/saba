@@ -19,7 +19,7 @@ $this->registerModule(
     'saba',
     'Search across blog archive',
     'Jean-Christian Denis and Contributors',
-    '2021.08.21',
+    '2021.08.21.1',
     [
         'permissions' => 'admin',
         'type'          => 'plugin',
