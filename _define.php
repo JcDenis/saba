@@ -1,15 +1,15 @@
 <?php
-# -- BEGIN LICENSE BLOCK ----------------------------------
-#
-# This file is part of saba, a plugin for Dotclear 2.
-# 
-# Copyright (c) 2009-2021 Jean-Christian Denis and contributors
-# 
-# Licensed under the GPL version 2.0 license.
-# A copy of this license is available in LICENSE file or at
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-#
-# -- END LICENSE BLOCK ------------------------------------
+/**
+ * @brief saba, a plugin for Dotclear 2
+ * 
+ * @package Dotclear
+ * @subpackage Plugin
+ * 
+ * @author Jean-Christian Denis and Contributors
+ * 
+ * @copyright Jean-Christian Denis
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if (!defined('DC_RC_PATH')) {
     return null;
@@ -21,10 +21,11 @@ $this->registerModule(
     'Jean-Christian Denis and Contributors',
     '2021.08.21.1',
     [
+        'requires' => [['core', '2.19']],
         'permissions' => 'admin',
         'type'          => 'plugin',
-        'dc_min'        => '2.19',
         'support'       => 'https://github.com/JcDenis/saba',
-        'details'       => 'https://plugins.dotaddict.org/dc2/details/saba'
+        'details'       => 'https://plugins.dotaddict.org/dc2/details/saba',
+        'repository' => 'https://raw.githubusercontent.com/JcDenis/saba/master/dcstore.xml'
     ]
 );

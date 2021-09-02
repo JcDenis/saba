@@ -54,4 +54,3 @@ $GLOBALS['__l10n']['Disable filter on age'] = 'Désactiver le filtre de date';
 
 #default-templates/saba_404_dotty.html:22
 $GLOBALS['__l10n']['Suggested items:'] = 'Articles suggérés :';
-

@@ -79,4 +79,3 @@ $GLOBALS['__l10n']['Filter by category'] = 'Filter par catégorie';
 
 #_widgets.php:213
 $GLOBALS['__l10n']['Filter by author'] = 'Filtrer par auteur';
-
