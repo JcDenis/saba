@@ -1,32 +1,31 @@
 <?php
 /**
  * @brief saba, a plugin for Dotclear 2
- * 
+ *
  * @package Dotclear
  * @subpackage Plugin
- * 
+ *
  * @author Jean-Christian Denis and Contributors
- * 
+ *
  * @copyright Jean-Christian Denis
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
 # settings namespace
-$core->blog->settings->addNamespace('saba');
+dcCore::app()->blog->settings->addNamespace('saba');
 
 # widget
-require_once dirname(__FILE__) . '/_widgets.php';
+require_once __DIR__ . '/_widgets.php';
 
 # behaviors
-$core->addBehavior(
-    'adminBlogPreferencesForm',
+dcCore::app()->addBehavior(
+    'adminBlogPreferencesFormV2',
     ['adminSaba', 'adminBlogPreferencesForm']
 );
-$core->addBehavior(
+dcCore::app()->addBehavior(
     'adminBeforeBlogSettingsUpdate',
     ['adminSaba', 'adminBeforeBlogSettingsUpdate']
 );
@@ -34,19 +33,19 @@ $core->addBehavior(
 # add settings to admin blog pref page
 class adminSaba
 {
-    public static function adminBlogPreferencesForm($core, $blog_settings)
+    public static function adminBlogPreferencesForm($blog_settings)
     {
         echo
         '<div class="fieldset">' .
         '<h4 id="saba_params">' . __('Search Across Blog Archive') . '</h4>' .
         '<p><label class="classic">' .
-        form::checkbox('saba_active', '1', (boolean) $blog_settings->saba->active) . 
+        form::checkbox('saba_active', '1', (bool) $blog_settings->saba->active) .
         __('Enable advanced search on this blog') . '</label></p>' .
         '<p><label class="classic">' .
-        form::checkbox('saba_error', '1', (boolean) $blog_settings->saba->error) . 
+        form::checkbox('saba_error', '1', (bool) $blog_settings->saba->error) .
         __('Enable suggestion for page 404') . '</label></p>' .
         '<p class="form-note">' .
-        __("This suggests visitors some posts on page 404.") .
+        __('This suggests visitors some posts on page 404.') .
         '</p>' .
         '</div>';
     }
