@@ -1,5 +1,12 @@
 # README
 
+[![Release](https://img.shields.io/github/v/release/JcDenis/saba)](https://github.com/JcDenis/saba/releases)
+[![Date](https://img.shields.io/github/release-date/JcDenis/saba)](https://github.com/JcDenis/saba/releases)
+[![Issues](https://img.shields.io/github/issues/JcDenis/saba)](https://github.com/JcDenis/saba/issues)
+[![Dotclear](https://img.shields.io/badge/dotclear-v2.24-blue.svg)](https://fr.dotclear.org/download)
+[![Dotaddict](https://img.shields.io/badge/dotaddict-official-green.svg)](https://plugins.dotaddict.org/dc2/details/saba)
+[![License](https://img.shields.io/github/license/JcDenis/saba)](https://github.com/JcDenis/saba/blob/master/LICENSE)
+
 ## WHAT IS SABA ?
 
 saba : Search Across Blog's Archive is a plugins for the open-source 
@@ -13,7 +20,7 @@ show related entries to visitor.
  saba requires: 
 
   * administrator permissions
-  * Dotclear 2.18 
+  * Dotclear 2.24 
   * Custom templates if default theme is not used.
 
 ## USAGE
@@ -30,6 +37,12 @@ You can find exemple in plugins/saba/default-tempaltes.
 
 ## MORE
 
- * License : GNU GPL v2
+ * License : [GNU GPL v2](https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)
  * Source & contribution : [GitHub Page](https://github.com/JcDenis/saba)
- * Packages & details:  [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/saba)
+ * Packages & details : [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/saba)
+
+## CONTRIBUTORS
+
+ * Jean-Christian Denis
+
+ You are welcome to contribute to this code.
