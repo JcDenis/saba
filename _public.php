@@ -179,11 +179,11 @@ class pubSaba
 
             if ($age[0]) {
                 $params['sql'] .= "AND P.post_dt < '" .
-                    dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[0]) . "' ";
+                    dt::str('%Y-%m-%d %H:%m:%S', $ts - (int) $age[0]) . "' ";
             }
             if ($age[1]) {
                 $params['sql'] .= "AND P.post_dt > '" .
-                    dt::str('%Y-%m-%d %H:%m:%S', $ts - $age[1]) . "' ";
+                    dt::str('%Y-%m-%d %H:%m:%S', $ts - (int) $age[1]) . "' ";
             }
         }
 
