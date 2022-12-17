@@ -259,6 +259,8 @@ class urlSaba extends dcUrlHandlers
                 return false;
             }
 
+            dcCore::app()->callBehavior('sabaBeforeErrorDocument');
+
             # Clean URI
             $_GET['q']               = implode('%20', $q);
             $_SERVER['QUERY_STRING'] = '';

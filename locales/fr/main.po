@@ -1,85 +1,66 @@
-# Language: Français
-# Module: saba - 2021.08.21
-# Date: 2021-08-22 23:22:12
-# Translated with translater 2021.08.18
-
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: saba 2021.08.21\n"
+"Project-Id-Version: saba 2022.11.20\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2021-08-22T23:22:12+00:00\n"
+"PO-Revision-Date: 2022-12-17T16:29:12+00:00\n"
 "Last-Translator: Jean-Christian Denis\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: _admin.php:38
 msgid "Search Across Blog Archive"
 msgstr "Rechercher dans les archives"
 
-#: _admin.php:41
 msgid "Enable advanced search on this blog"
 msgstr "Activer la recherche avancée sur ce blog"
 
-#: _admin.php:44
 msgid "Enable suggestion for page 404"
 msgstr "Activer la suggestion sur la page 404"
 
-#: _admin.php:46
 msgid "This suggests visitors some posts on page 404."
 msgstr "Ceci suggère au visiteurs des billets sur la page 404."
 
-#: _widgets.php:18
+msgid "404 error (saba)"
+msgstr "Erreur 404 (saba)"
+
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: _widgets.php:21
 msgid "Add more search options on public side"
 msgstr "Ajoute plus d'options de recherche"
 
-#: _widgets.php:26
 msgid "Disable filter on post types"
 msgstr "Désactiver le filtre de type de billets"
 
-#: _widgets.php:30
 msgid "Hidden types:"
 msgstr "Billets cachés :"
 
-#: _widgets.php:33
 msgid "Disable filter on post options"
 msgstr "Désactiver le filtre des options de billet"
 
-#: _widgets.php:37
 msgid "Hidden options:"
 msgstr "Options cachées :"
 
-#: _widgets.php:40
 msgid "Disable filter on categories"
 msgstr "Désactiver le filtre de catégories"
 
-#: _widgets.php:44
 msgid "Hidden categories:"
 msgstr "Catégories cachées"
 
-#: _widgets.php:47
 msgid "Disable filter on authors"
 msgstr "Désactiver le filtre d'auteurs"
 
-#: _widgets.php:51
 msgid "Hidden authors:"
 msgstr "Auteurs cachés"
 
-#: _widgets.php:54
 msgid "Disable filter on order"
 msgstr "Désactiver le filtre d'ordre"
 
-#: _widgets.php:60
 msgid "Disable filter on age"
 msgstr "Désactiver le filtre de date"
 
-#: default-templates/saba_404_dotty.html:22
 msgid "Suggested items:"
 msgstr "Articles suggérés :"
 

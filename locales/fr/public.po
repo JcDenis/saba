@@ -1,118 +1,66 @@
-# Language: Français
-# Module: saba - 2021.08.21
-# Date: 2021-08-22 23:22:12
-# Translated with translater 2021.08.18
-
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: saba 2021.08.21\n"
+"Project-Id-Version: saba 2022.11.20\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2021-08-22T23:22:12+00:00\n"
+"PO-Revision-Date: 2022-12-17T16:29:12+00:00\n"
 "Last-Translator: Jean-Christian Denis\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: _public.php:293
-#: _public.php:303
-msgid "Selected entry"
-msgstr "Billet sélectionné"
-
-#: _public.php:294
 msgid "With comments"
 msgstr "Avec commentaires"
 
-#: _public.php:295
 msgid "With trackbacks"
 msgstr "Avec rétroliens"
 
-#: _public.php:302
-msgid "Title"
-msgstr "Titre"
-
-#: _public.php:304
-msgid "Author"
-msgstr "Auteur·rice"
-
-#: _public.php:305
-msgid "Date"
-msgstr "Date"
-
-#: _public.php:306
-msgid "Update"
-msgstr "Mise à jour"
-
-#: _public.php:307
 msgid "Comments count"
 msgstr "Nombre de commentaires"
 
-#: _public.php:308
 msgid "Trackbacks count"
 msgstr "Nombre de rétroliens"
 
-#: _public.php:315
 msgid "All"
 msgstr "Tous"
 
-#: _public.php:316
 msgid "Less than a month"
 msgstr "Moins d'un mois"
 
-#: _public.php:317
 msgid "From 1 to 6 month"
 msgstr "De 1 à 6 mois"
 
-#: _public.php:318
 msgid "From 6 to 12 month"
 msgstr "De 6 à 12 mois"
 
-#: _public.php:319
 msgid "More than a year"
 msgstr "Plus d'un an"
 
-#: _public.php:326
-msgid "Entry"
-msgstr "Publication"
-
-#: _public.php:327
-msgid "Page"
-msgstr "Page"
-
-#: _public.php:328
 msgid "Poll"
 msgstr "Sondage"
 
-#: _public.php:329
 msgid "Event"
 msgstr "Événement"
 
-#: _widgets.php:114
 msgid "Reverse order"
 msgstr "Inverser l'ordre"
 
-#: _widgets.php:115
 msgid "Filter order"
 msgstr "Options de tri"
 
-#: _widgets.php:135
 msgid "Filter options"
 msgstr "Options du filtre"
 
-#: _widgets.php:151
 msgid "Filter by age"
 msgstr "Filtrer par date"
 
-#: _widgets.php:171
 msgid "Filter by type"
 msgstr "Filtrer par type"
 
-#: _widgets.php:192
 msgid "Filter by category"
 msgstr "Filter par catégorie"
 
-#: _widgets.php:213
 msgid "Filter by author"
 msgstr "Filtrer par auteur"
 
