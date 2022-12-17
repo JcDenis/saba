@@ -227,7 +227,12 @@ class pubSaba
         self::getPostsParams($p);
 
         $OR = [];
-        foreach (explode(',', $p['search']) as $sentence) {
+        # decoupe un peu plus la recherche
+        $splits = preg_split("#[\s//,-_]+#", $p['search']);
+        if (!$splits) {
+            $splits =  explode(',', $p['search']);
+        }
+        foreach ($splits as $sentence) {
             $AND   = [];
             $words = text::splitWords($sentence);
             foreach ($words as $word) {
