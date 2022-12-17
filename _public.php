@@ -94,14 +94,20 @@ class pubSaba
             $params['limit'] = [(($_page_number - 1) * $params['limit']), $params['limit']];
 
             # get posts
+            $posts = dcCore::app()->blog->getPosts($params);
+            if ($posts->isEmpty()) { // hack: don't breack context
+                $params = ['limit' => $params['limit']];
+                $posts = dcCore::app()->blog->getPosts($params);
+            }
             dcCore::app()->ctx->post_params = $params;
-            dcCore::app()->ctx->posts       = dcCore::app()->blog->getPosts($params);
+            dcCore::app()->ctx->posts       = $posts;
+
             unset($params);
         }
         dcCore::app()->ctx->saba_options = $options;
     }
 
-    public static function getPostsParams($params)
+    public static function getPostsParams(&$params)
     {
         if (!isset($params['sql'])) {
             $params['sql'] = '';
