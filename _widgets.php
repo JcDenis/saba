@@ -76,10 +76,10 @@ class sabaWidget
 
     public static function getWidget($w)
     {
-        dcCore::app()->blog->settings->addNamespace('saba');
+        dcCore::app()->blog->settings->addNamespace(basename(__DIR__));
 
-        if (!dcCore::app()->blog->settings->saba->active
-         || !dcCore::app()->blog->settings->saba->error && dcCore::app()->url->type == '404'
+        if (!dcCore::app()->blog->settings->__get(basename(__DIR__))->active
+         || !dcCore::app()->blog->settings->__get(basename(__DIR__))->error && dcCore::app()->url->type == '404'
          || $w->offline
         ) {
             return;

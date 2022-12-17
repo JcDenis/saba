@@ -15,9 +15,9 @@ if (!defined('DC_RC_PATH')) {
 }
 
 # setting
-dcCore::app()->blog->settings->addNamespace('saba');
+dcCore::app()->blog->settings->addNamespace(basename(__DIR__));
 
-if (!dcCore::app()->blog->settings->saba->active) {
+if (!dcCore::app()->blog->settings->__get(basename(__DIR__))->active) {
     return null;
 }
 
@@ -25,7 +25,7 @@ if (!dcCore::app()->blog->settings->saba->active) {
 l10n::set(__DIR__ . '/locales/' . dcCore::app()->lang . '/public');
 
 # widget
-require_once __DIR__ . '/_widgets.php';
+require __DIR__ . '/_widgets.php';
 
 # template path
 dcCore::app()->tpl->setPath(
@@ -48,7 +48,7 @@ dcCore::app()->addBehavior(
 );
 
 # url
-if (dcCore::app()->blog->settings->saba->error) {
+if (dcCore::app()->blog->settings->__get(basename(__DIR__))->error) {
     dcCore::app()->url->registerError(['urlSaba', 'error']);
 }
 

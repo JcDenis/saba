@@ -14,11 +14,11 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-# widget
-require_once __DIR__ . '/_widgets.php';
-
 # settings namespace
-dcCore::app()->blog->settings->addNamespace('saba');
+dcCore::app()->blog->settings->addNamespace(basename(__DIR__));
+
+# widget
+require __DIR__ . '/_widgets.php';
 
 # behaviors
 dcCore::app()->addBehavior('adminBlogPreferencesFormV2', function ($blog_settings) {
@@ -26,10 +26,10 @@ dcCore::app()->addBehavior('adminBlogPreferencesFormV2', function ($blog_setting
     '<div class="fieldset">' .
     '<h4 id="saba_params">' . __('Search Across Blog Archive') . '</h4>' .
     '<p><label class="classic">' .
-    form::checkbox('saba_active', '1', (bool) $blog_settings->saba->active) .
+    form::checkbox('saba_active', '1', (bool) $blog_settings->__get(basename(__DIR__))->active) .
     __('Enable advanced search on this blog') . '</label></p>' .
     '<p><label class="classic">' .
-    form::checkbox('saba_error', '1', (bool) $blog_settings->saba->error) .
+    form::checkbox('saba_error', '1', (bool) $blog_settings->_get(basename(__DIR__))->error) .
     __('Enable suggestion for page 404') . '</label></p>' .
     '<p class="form-note">' .
     __('This suggests visitors some posts on page 404.') .
@@ -38,6 +38,6 @@ dcCore::app()->addBehavior('adminBlogPreferencesFormV2', function ($blog_setting
 });
 
 dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', function ($blog_settings) {
-    $blog_settings->saba->put('active', !empty($_POST['saba_active']));
-    $blog_settings->saba->put('error', !empty($_POST['saba_error']));
+    $blog_settings->__get(basename(__DIR__))->put('active', !empty($_POST['saba_active']));
+    $blog_settings->__get(basename(__DIR__))->put('error', !empty($_POST['saba_error']));
 });
