@@ -24,9 +24,9 @@ $this->registerModule(
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_ADMIN,
         ]),
-        'type'        => 'plugin',
-        'support'     => 'https://github.com/JcDenis/saba',
-        'details'     => 'https://plugins.dotaddict.org/dc2/details/saba',
-        'repository'  => 'https://raw.githubusercontent.com/JcDenis/saba/master/dcstore.xml',
+        'type'       => 'plugin',
+        'support'    => 'https://github.com/JcDenis/saba',
+        'details'    => 'https://plugins.dotaddict.org/dc2/details/saba',
+        'repository' => 'https://raw.githubusercontent.com/JcDenis/saba/master/dcstore.xml',
     ]
 );

@@ -68,7 +68,7 @@ class pubSaba
         ];
     }
 
-    public static function urlHandlerBeforeGetData($_ctx)
+    public static function urlHandlerBeforeGetData($_)
     {
         $options = tplSaba::getSabaDefaultPostsOptions();
 
@@ -97,7 +97,7 @@ class pubSaba
             $posts = dcCore::app()->blog->getPosts($params);
             if ($posts->isEmpty()) { // hack: don't breack context
                 $params = ['limit' => $params['limit']];
-                $posts = dcCore::app()->blog->getPosts($params);
+                $posts  = dcCore::app()->blog->getPosts($params);
             }
             dcCore::app()->ctx->post_params = $params;
             dcCore::app()->ctx->posts       = $posts;
@@ -230,7 +230,7 @@ class pubSaba
         # decoupe un peu plus la recherche
         $splits = preg_split("#[\s//,-_]+#", $p['search']);
         if (!$splits) {
-            $splits =  explode(',', $p['search']);
+            $splits = explode(',', $p['search']);
         }
         foreach ($splits as $sentence) {
             $AND   = [];
