@@ -78,28 +78,15 @@ class sabaWidget
     {
         dcCore::app()->blog->settings->addNamespace('saba');
 
-        if (!dcCore::app()->blog->settings->saba->active) {
+        if (!dcCore::app()->blog->settings->saba->active
+         || !dcCore::app()->blog->settings->saba->error && dcCore::app()->url->type == '404'
+         || $w->offline
+        ) {
             return;
         }
 
-        if (!dcCore::app()->blog->settings->saba->error && dcCore::app()->url->type == '404') {
-            return;
-        }
-
-        if ($w->offline) {
-            return;
-        }
-
-        $q = dcCore::app()->ctx->saba_otpion ?? '';
-
-        # title and search
-        $res = ($w->title ? $w->renderTitle('<label for="q">' . html::escapeHTML($w->title) . '</label>') : '') .
-            '<form action="' . dcCore::app()->blog->url . '" method="get" role="search">' .
-            '<p><input type="text" size="10" maxlength="255" id="q" name="q" value="' .
-            html::escapeHTML($q) . '" ' .
-            ($w->placeholder ? 'placeholder="' . html::escapeHTML($w->placeholder) . '"' : '') .
-            ' aria-label="' . __('Search') . '"/> ' .
-            '<input type="submit" class="submit" value="ok" title="' . __('Search') . '" /></p>' ;
+        $saba_options = dcCore::app()->ctx->saba_options ?? tplSaba::getSabaDefaultPostsOptions();
+        $res = '';
 
         # advenced search only on search page
         if (dcCore::app()->url->type == 'search') {
@@ -110,12 +97,12 @@ class sabaWidget
                 foreach (tplSaba::getSabaFormOrders() as $k => $v) {
                     $ct .= '<li><label><input name="q_order" type="radio" value="' .
                         $v . '" ' .
-                        ($v == dcCore::app()->ctx->saba_options['q_order'] ? 'checked="checked" ' : '') .
+                        ($v == $saba_options['q_order'] ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML($k) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $ct .= '<li><label><input name="q_rev" type="checkbox" value="1" ' .
-                        (!empty(dcCore::app()->ctx->saba_options['q_rev']) ? 'checked="checked" ' : '') .
+                        (!empty($saba_options['q_rev']) ? 'checked="checked" ' : '') .
                         '/> ' . __('Reverse order') . '</label></li>';
                     $res .= $w->renderTitle(__('Filter order')) . sprintf('<ul>%s</ul>', $ct);
                 }
@@ -132,7 +119,7 @@ class sabaWidget
                     }
                     $ct .= '<li><label><input name="q_opt[]" type="checkbox" value="' .
                         $v . '" ' .
-                        (in_array($v, dcCore::app()->ctx->saba_options['q_opt']) ? 'checked="checked" ' : '') .
+                        (in_array($v, $saba_options['q_opt']) ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML($k) . '</label></li>';
                 }
                 if (!empty($ct)) {
@@ -147,7 +134,7 @@ class sabaWidget
                 foreach (tplSaba::getSabaFormAges() as $k => $v) {
                     $ct .= '<li><label><input name="q_age" type="radio" value="' .
                         $v . '" ' .
-                        ($v == dcCore::app()->ctx->saba_options['q_age'] ? 'checked="checked" ' : '') .
+                        ($v == $saba_options['q_age'] ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML($k) . '</label></li>';
                 }
                 if (!empty($ct)) {
@@ -166,7 +153,7 @@ class sabaWidget
                     }
                     $ct .= '<li><label><input name="q_type[]" type="checkbox" value="' .
                         $v . '" ' .
-                        (in_array($v, dcCore::app()->ctx->saba_options['q_type']) ? 'checked="checked" ' : '') .
+                        (in_array($v, $saba_options['q_type']) ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML($k) . '</label></li>';
                 }
                 if (!empty($ct)) {
@@ -186,7 +173,7 @@ class sabaWidget
                     }
                     $ct .= '<li><label><input name="q_cat[]" type="checkbox" value="' .
                         $rs->cat_id . '" ' .
-                        (in_array($rs->cat_id, dcCore::app()->ctx->saba_options['q_cat']) ? 'checked="checked" ' : '') .
+                        (in_array($rs->cat_id, $saba_options['q_cat']) ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML($rs->cat_title) . '</label></li>';
                 }
                 if (!empty($ct)) {
@@ -206,7 +193,7 @@ class sabaWidget
                     }
                     $ct .= '<li><label><input name="q_user[]" type="checkbox" value="' .
                         $rs->user_id . '" ' .
-                        (in_array($rs->user_id, dcCore::app()->ctx->saba_options['q_user']) ? 'checked="checked" ' : '') .
+                        (in_array($rs->user_id, $saba_options['q_user']) ? 'checked="checked" ' : '') .
                         '/> ' . html::escapeHTML(dcUtils::getUserCN($rs->user_id, $rs->user_name, $rs->user_firstname, $rs->user_displayname)) . '</label></li>';
                 }
                 if (!empty($ct)) {
@@ -215,8 +202,19 @@ class sabaWidget
             }
         }
 
-        $res .= '</form>';
-
-        return $w->renderDiv($w->content_only, $w->class, 'id="search"', $res);
+        return $w->renderDiv(
+            $w->content_only,
+            $w->class,
+            'id="search"',
+            ($w->title ? $w->renderTitle('<label for="q">' . html::escapeHTML($w->title) . '</label>') : '') .
+            '<form action="' . dcCore::app()->blog->url . '" method="get" role="search">' .
+            '<p><input type="text" size="10" maxlength="255" id="q" name="q" value="' .
+            html::escapeHTML($saba_options['q']) . '" ' .
+            ($w->placeholder ? 'placeholder="' . html::escapeHTML($w->placeholder) . '"' : '') .
+            ' aria-label="' . __('Search') . '"/> ' .
+            '<input type="submit" class="submit" value="ok" title="' . __('Search') . '" /></p>' .
+            $res .
+            '</form>'
+        );
     }
 }
