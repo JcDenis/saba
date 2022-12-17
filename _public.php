@@ -270,7 +270,7 @@ class urlSaba extends dcUrlHandlers
 
             # Serve saba
             $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
-             self::serveDocument('saba_404_' . (!empty($tplset) && in_array($tplset, ['dotty', 'mustek']) ? $tplset : 'default') . '.html');
+            self::serveDocument('saba_404_' . (!empty($tplset) && in_array($tplset, ['dotty', 'mustek']) ? $tplset : 'default') . '.html');
 
             return true;
         }

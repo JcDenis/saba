@@ -86,7 +86,7 @@ class sabaWidget
         }
 
         $saba_options = dcCore::app()->ctx->saba_options ?? tplSaba::getSabaDefaultPostsOptions();
-        $res = '';
+        $res          = '';
 
         # advenced search only on search page
         if (dcCore::app()->url->type == 'search') {
