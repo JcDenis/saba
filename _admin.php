@@ -29,7 +29,7 @@ dcCore::app()->addBehavior('adminBlogPreferencesFormV2', function ($blog_setting
     form::checkbox('saba_active', '1', (bool) $blog_settings->__get(basename(__DIR__))->active) .
     __('Enable advanced search on this blog') . '</label></p>' .
     '<p><label class="classic">' .
-    form::checkbox('saba_error', '1', (bool) $blog_settings->_get(basename(__DIR__))->error) .
+    form::checkbox('saba_error', '1', (bool) $blog_settings->__get(basename(__DIR__))->error) .
     __('Enable suggestion for page 404') . '</label></p>' .
     '<p class="form-note">' .
     __('This suggests visitors some posts on page 404.') .
