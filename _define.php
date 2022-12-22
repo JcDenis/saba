@@ -18,15 +18,15 @@ $this->registerModule(
     'saba',
     'Search across blog archive',
     'Jean-Christian Denis and Contributors',
-    '2022.11.20',
+    '2022.12.22',
     [
         'requires'    => [['core', '2.24']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_ADMIN,
         ]),
-        'type'       => 'plugin',
-        'support'    => 'https://github.com/JcDenis/' . basename(__DIR__),
-        'details'    => 'https://plugins.dotaddict.org/dc2/details/' . basename(__DIR__),
-        'repository' => 'https://raw.githubusercontent.com/JcDenis/' . basename(__DIR__) . '/master/dcstore.xml',
+        'type'        => 'plugin',
+        'support'     => 'https://github.com/JcDenis/' . basename(__DIR__),
+        'details'     => 'https://plugins.dotaddict.org/dc2/details/' . basename(__DIR__),
+        'repository'  => 'https://raw.githubusercontent.com/JcDenis/' . basename(__DIR__) . '/master/dcstore.xml',
     ]
 );

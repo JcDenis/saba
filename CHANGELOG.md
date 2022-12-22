@@ -1,3 +1,14 @@
+2022.12.22
+- enhance search
+- add error 404 to plugi activityReport
+- use SVG icon
+- use abstract plugin id
+- remove currywurst template
+- fix right template seletion
+- fix dblayer error
+- fix permissions
+- code review
+
 2022.11.20
 - fix compatibility with Dotclear 2.24 (required)
 
