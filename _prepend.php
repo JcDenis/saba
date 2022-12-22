@@ -15,7 +15,7 @@ if (!defined('DC_RC_PATH')) {
 }
 
 if (defined('ACTIVITY_REPORT_V2')) {
-    dcCore::app()->activityReport->addAction(
+    dcCore::app()->__get('activityReport')->addAction(
         'blog',
         'saba404',
         __('404 error (saba)'),
@@ -23,7 +23,7 @@ if (defined('ACTIVITY_REPORT_V2')) {
         'sabaBeforeErrorDocument',
         function () {
             $logs = [dcCore::app()->blog->url . urldecode($_SERVER['QUERY_STRING'])];
-            dcCore::app()->activityReport->addLog('blog', 'saba404', $logs);
+            dcCore::app()->__get('activityReport')->addLog('blog', 'saba404', $logs);
         }
     );
 }

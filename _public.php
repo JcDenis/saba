@@ -17,7 +17,7 @@ if (!defined('DC_RC_PATH')) {
 # setting
 dcCore::app()->blog->settings->addNamespace(basename(__DIR__));
 
-if (!dcCore::app()->blog->settings->__get(basename(__DIR__))->active) {
+if (!dcCore::app()->blog->settings->get(basename(__DIR__))->get('active')) {
     return null;
 }
 
@@ -48,7 +48,7 @@ dcCore::app()->addBehavior(
 );
 
 # url
-if (dcCore::app()->blog->settings->__get(basename(__DIR__))->error) {
+if (dcCore::app()->blog->settings->get(basename(__DIR__))->get('error')) {
     dcCore::app()->url->registerError(['urlSaba', 'error']);
 }
 
@@ -90,7 +90,7 @@ class pubSaba
             if ($_page_number < 1) {
                 $_page_number = 1;
             }
-            $params['limit'] = dcCore::app()->ctx->nb_entry_per_page;
+            $params['limit'] = dcCore::app()->ctx->__get('nb_entry_per_page');
             $params['limit'] = [(($_page_number - 1) * $params['limit']), $params['limit']];
 
             # get posts
@@ -99,12 +99,12 @@ class pubSaba
                 $params = ['limit' => $params['limit']];
                 $posts  = dcCore::app()->blog->getPosts($params);
             }
-            dcCore::app()->ctx->post_params = $params;
-            dcCore::app()->ctx->posts       = $posts;
+            dcCore::app()->ctx->__set('post_params', $params);
+            dcCore::app()->ctx->__set('posts', $posts);
 
             unset($params);
         }
-        dcCore::app()->ctx->saba_options = $options;
+        dcCore::app()->ctx->__set('saba_options', $options);
     }
 
     public static function getPostsParams(&$params)
@@ -269,7 +269,7 @@ class urlSaba extends dcUrlHandlers
             $GLOBALS['_from_error'] = true;
 
             # Serve saba
-            $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
+            $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->get('system')->get('theme'), 'tplset');
             self::serveDocument('saba_404_' . (!empty($tplset) && in_array($tplset, ['dotty', 'mustek']) ? $tplset : 'default') . '.html');
 
             return true;
