@@ -10,20 +10,51 @@
  * @copyright Jean-Christian Denis
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return null;
-}
+declare(strict_types=1);
 
-if (defined('ACTIVITY_REPORT_V2')) {
-    dcCore::app()->__get('activityReport')->addAction(
-        'blog',
-        'saba404',
-        __('404 error (saba)'),
-        __('New 404 error page at "%s"'),
-        'sabaBeforeErrorDocument',
-        function () {
-            $logs = [dcCore::app()->blog->url . urldecode($_SERVER['QUERY_STRING'])];
-            dcCore::app()->__get('activityReport')->addLog('blog', 'saba404', $logs);
+namespace Dotclear\Plugin\saba;
+
+use dcCore;
+use dcNsProcess;
+use Dotclear\Plugin\activityReport\{
+    Action,
+    ActivityReport,
+    Group
+};
+
+class Prepend extends dcNsProcess
+{
+    public static function init(): bool
+    {
+        static::$init = My::phpCompliant();
+
+        return static::$init;
+    }
+
+    public static function process(): bool
+    {
+        if (!static::$init) {
+            return false;
         }
-    );
+
+        // log frontend page 404 intercepted by saba
+        if (defined('ACTIVITY_REPORT') && ACTIVITY_REPORT == 3) {
+            $group = new Group(My::id(), My::name());
+            $group->add(new Action(
+                'saba404',
+                __('404 error (saba)'),
+                __('New 404 error page at "%s"'),
+                'sabaBeforeErrorDocument',
+                function () {
+                    $url = is_null(dcCore::app()->blog) ? '' : dcCore::app()->blog->url;
+
+                    $logs = [$url . urldecode($_SERVER['QUERY_STRING'])];
+                    ActivityReport::instance()->addLog(My::id(), 'saba404', $logs);
+                }
+            ));
+            ActivityReport::instance()->groups->add($group);
+        }
+
+        return true;
+    }
 }

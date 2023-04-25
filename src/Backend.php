@@ -10,34 +10,67 @@
  * @copyright Jean-Christian Denis
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return;
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\saba;
+
+use dcCore;
+use dcNsProcess;
+use dcSettings;
+use Dotclear\Helper\Html\Form\{
+    Checkbox,
+    Label,
+    Para
+};
+
+class Backend extends dcNsProcess
+{
+    public static function init(): bool
+    {
+        static::$init = defined('DC_CONTEXT_ADMIN')
+            && My::phpCompliant();
+
+        return static::$init;
+    }
+
+    public static function process(): bool
+    {
+        if (!static::$init) {
+            return false;
+        }
+
+        dcCore::app()->addBehaviors([
+            // add blog preferences form
+            'adminBlogPreferencesFormV2' => function (dcSettings $blog_settings): void {
+                echo
+                '<div class="fieldset">' .
+                '<h4 id="saba_params">' . __('Search Across Blog Archive') . '</h4>' .
+
+                // saba_active
+                (new Para())->items([
+                    (new Checkbox('saba_active', (bool) $blog_settings->get(My::id())->get('active')))->value(1),
+                    (new Label(__('Enable advanced search on this blog'), Label::OUTSIDE_LABEL_AFTER))->for('saba_active')->class('classic'),
+                ])->render() .
+                // saba_error
+                (new Para())->items([
+                    (new Checkbox('saba_error', (bool) $blog_settings->get(My::id())->get('error')))->value(1),
+                    (new Label(__('Enable suggestion for page 404'), Label::OUTSIDE_LABEL_AFTER))->for('saba_error')->class('classic'),
+                ])->render() .
+
+                '<p class="form-note">' .
+                __('This suggests visitors some posts on page 404.') .
+                '</p>' .
+                '</div>';
+            },
+            // save blog preference form
+            'adminBeforeBlogSettingsUpdate' => function (dcSettings $blog_settings): void {
+                $blog_settings->get(My::id())->put('active', !empty($_POST['saba_active']));
+                $blog_settings->get(My::id())->put('error', !empty($_POST['saba_error']));
+            },
+            // init widget
+            'initWidgets' => [Widgets::class, 'initWidgets'],
+        ]);
+
+        return true;
+    }
 }
-
-# settings namespace
-dcCore::app()->blog->settings->addNamespace(basename(__DIR__));
-
-# widget
-require __DIR__ . '/_widgets.php';
-
-# behaviors
-dcCore::app()->addBehavior('adminBlogPreferencesFormV2', function ($blog_settings) {
-    echo
-    '<div class="fieldset">' .
-    '<h4 id="saba_params">' . __('Search Across Blog Archive') . '</h4>' .
-    '<p><label class="classic">' .
-    form::checkbox('saba_active', '1', (bool) $blog_settings->get(basename(__DIR__))->active) .
-    __('Enable advanced search on this blog') . '</label></p>' .
-    '<p><label class="classic">' .
-    form::checkbox('saba_error', '1', (bool) $blog_settings->get(basename(__DIR__))->error) .
-    __('Enable suggestion for page 404') . '</label></p>' .
-    '<p class="form-note">' .
-    __('This suggests visitors some posts on page 404.') .
-    '</p>' .
-    '</div>';
-});
-
-dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', function ($blog_settings) {
-    $blog_settings->get(basename(__DIR__))->put('active', !empty($_POST['saba_active']));
-    $blog_settings->get(basename(__DIR__))->put('error', !empty($_POST['saba_error']));
-});
