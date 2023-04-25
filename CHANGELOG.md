@@ -1,3 +1,10 @@
+203.04.25
+- require dotclear 2.26
+- use namespace
+- move templates to standard path
+- add plugin Uninstaller features
+- add plugin activityReport features
+
 2022.12.22
 - enhance search
 - add error 404 to plugi activityReport
