@@ -1,4 +1,8 @@
-203.04.25
+2023.05.13
+- require dotclear 2.26
+- cleanup for dotclear 2.26 stable
+
+2023.04.25
 - require dotclear 2.26
 - use namespace
 - move templates to standard path
