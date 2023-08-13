@@ -2,12 +2,12 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="saba">
     <name>saba</name>
-    <version>2023.05.13</version>
+    <version>2023.08.13</version>
     <author>Jean-Christian Denis and Contributors</author>
     <desc>Search across blog archive</desc>
-    <file>https://github.com/JcDenis/saba/releases/download/v2023.05.13/plugin-saba.zip</file>
-    <da:dcmin>2.26</da:dcmin>
-    <da:details>https://plugins.dotaddict.org/dc2/details/saba</da:details>
-    <da:support>https://github.com/JcDenis/saba</da:support>
+    <file>https://git.dotclear.watch/JcDenis/saba/releases/download/v2023.08.13/plugin-saba.zip</file>
+    <da:dcmin>2.27</da:dcmin>
+    <da:details>https://git.dotclear.watch/JcDenis/saba/src/branch/master/README.md</da:details>
+    <da:support>https://git.dotclear.watch/JcDenis/saba/issues</da:support>
   </module>
 </modules>
