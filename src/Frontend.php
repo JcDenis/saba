@@ -15,28 +15,26 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\saba;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Frontend extends dcNsProcess
+class Frontend extends Process
 {
     public static function init(): bool
     {
-        static::$init = defined('DC_RC_PATH');
-
-        return static::$init;
+        return self::status(My::checkContext(My::FRONTEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        if (is_null(dcCore::app()->blog) || !dcCore::app()->blog->settings->get(My::id())->get('active')) {
+        if (My::settings()->get('active')) {
             return false;
         }
 
-        if (dcCore::app()->blog->settings->get(My::id())->get('error')) {
+        if (My::settings()->get('error')) {
             dcCore::app()->url->registerError([UrlHandler::class, 'error']);
         }
 
