@@ -1,25 +1,21 @@
 <?php
-/**
- * @brief saba, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
-use dcCore;
-use dcUtils;
+use Dotclear\App;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsStack;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
+/**
+ * @brief       saba widgets class.
+ * @ingroup     saba
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class Widgets
 {
     /**
@@ -33,7 +29,7 @@ class Widgets
             ->create(
                 'saba',
                 __('Advanced search'),
-                [self::class, 'parseWidget'],
+                self::parseWidget(...),
                 null,
                 __('Add more search options on public side')
             )
@@ -90,23 +86,22 @@ class Widgets
      */
     public static function parseWidget(WidgetsElement $w): string
     {
-        if (is_null(dcCore::app()->blog)
-            || is_null(dcCore::app()->ctx)
-            || !dcCore::app()->blog->settings->get(My::id())->get('active')
-            || !dcCore::app()->blog->settings->get(My::id())->get('error') && dcCore::app()->url->type == '404'
+        if (!App::blog()->isDefined()
+            || !App::blog()->settings()->get(My::id())->get('active')
+            || !App::blog()->settings()->get(My::id())->get('error') && App::url()->type == '404'
             || $w->__get('offline')
         ) {
             return '';
         }
 
-        $saba_options = dcCore::app()->ctx->__get('saba_options') ?? [];
+        $saba_options = App::frontend()->context()->__get('saba_options') ?? [];
         if (!is_array($saba_options) || empty($saba_options)) {
             $saba_options = Utils::getSabaDefaultPostsOptions();
         }
         $res = '';
 
         # advanced search only on search page
-        if (dcCore::app()->url->type == 'search') {
+        if (App::url()->type == 'search') {
             # order
             if (!$w->__get('saba_filter_orders')) {
                 $ct = '';
@@ -182,7 +177,7 @@ class Widgets
             if (!$w->__get('saba_filter_categories')) {
                 $ct = '';
                 $rm = explode(',', $w->__get('saba_remove_categories'));
-                $rs = dcCore::app()->blog->getCategories();
+                $rs = App::blog()->getCategories();
 
                 while ($rs->fetch()) {
                     if (in_array($rs->f('cat_id'), $rm) || in_array($rs->f('cat_url'), $rm)) {
@@ -202,7 +197,7 @@ class Widgets
             if (!$w->__get('saba_filter_authors')) {
                 $ct = '';
                 $rm = explode(',', $w->__get('saba_remove_authors'));
-                $rs = dcCore::app()->blog->getPostsUsers();
+                $rs = App::blog()->getPostsUsers();
 
                 while ($rs->fetch()) {
                     if (in_array($rs->f('user_id'), $rm)) {
@@ -212,7 +207,7 @@ class Widgets
                         '<li><label><input name="q_user[]" type="checkbox" value="%s" %s/> %s</label></li>',
                         $rs->f('user_id'),
                         in_array($rs->f('user_id'), $saba_options['q_user']) ? 'checked="checked" ' : '',
-                        Html::escapeHTML(dcUtils::getUserCN($rs->f('user_id'), $rs->f('user_name'), $rs->f('user_firstname'), $rs->f('user_displayname')))
+                        Html::escapeHTML(App::users()->getUserCN($rs->f('user_id'), $rs->f('user_name'), $rs->f('user_firstname'), $rs->f('user_displayname')))
                     );
                 }
                 if (!empty($ct)) {
@@ -226,7 +221,7 @@ class Widgets
             $w->__get('class'),
             'id="search"',
             ($w->__get('title') ? $w->renderTitle('<label for="q">' . Html::escapeHTML($w->__get('title')) . '</label>') : '') .
-            '<form action="' . dcCore::app()->blog->url . '" method="get" role="search">' .
+            '<form action="' . App::blog()->url() . '" method="get" role="search">' .
             '<p><input type="text" size="10" maxlength="255" id="q" name="q" value="' .
             Html::escapeHTML($saba_options['q']) . '" ' .
             ($w->__get('placeholder') ? 'placeholder="' . Html::escapeHTML($w->__get('placeholder')) . '"' : '') .

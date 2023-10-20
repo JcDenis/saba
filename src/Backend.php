@@ -1,28 +1,25 @@
 <?php
-/**
- * @brief saba, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
-use dcCore;
-use dcSettings;
+use Dotclear\App;
 use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Form\{
     Checkbox,
     Label,
     Para
 };
+use Dotclear\Interface\Core\BlogSettingsInterface;
 
+/**
+ * @brief       saba backend class.
+ * @ingroup     saba
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class Backend extends Process
 {
     public static function init(): bool
@@ -36,9 +33,9 @@ class Backend extends Process
             return false;
         }
 
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             // add blog preferences form
-            'adminBlogPreferencesFormV2' => function (dcSettings $blog_settings): void {
+            'adminBlogPreferencesFormV2' => function (BlogSettingsInterface $blog_settings): void {
                 echo
                 '<div class="fieldset">' .
                 '<h4 id="saba_params">' . __('Search Across Blog Archive') . '</h4>' .
@@ -60,12 +57,12 @@ class Backend extends Process
                 '</div>';
             },
             // save blog preference form
-            'adminBeforeBlogSettingsUpdate' => function (dcSettings $blog_settings): void {
+            'adminBeforeBlogSettingsUpdate' => function (BlogSettingsInterface $blog_settings): void {
                 $blog_settings->get(My::id())->put('active', !empty($_POST['saba_active']));
                 $blog_settings->get(My::id())->put('error', !empty($_POST['saba_error']));
             },
             // init widget
-            'initWidgets' => [Widgets::class, 'initWidgets'],
+            'initWidgets' => Widgets::initWidgets(...),
         ]);
 
         return true;

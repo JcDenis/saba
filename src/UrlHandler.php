@@ -1,24 +1,21 @@
 <?php
-/**
- * @brief saba, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
-use dcCore;
-use dcUrlHandlers;
+use Dotclear\App;
+use Dotclear\Core\Frontend\Url;
 use Exception;
 
-class UrlHandler extends dcUrlHandlers
+/**
+ * @brief       saba frontend URL handler class.
+ * @ingroup     saba
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
+class UrlHandler extends Url
 {
     public static function error(?string $args, string $type, Exception $e): void
     {
@@ -28,7 +25,7 @@ class UrlHandler extends dcUrlHandlers
                 return;
             }
 
-            dcCore::app()->callBehavior('sabaBeforeErrorDocument');
+            App::behavior()->callBehavior('sabaBeforeErrorDocument');
 
             # Clean URI
             $_GET['q']               = implode('%20', $q);

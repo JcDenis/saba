@@ -1,26 +1,23 @@
 <?php
-/**
- * @brief saba, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
 use ArrayObject;
-use dcCore;
+use Dotclear\App;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Text;
 
-use context;
+use Dotclear\Core\Frontend\Ctx;
 
+/**
+ * @brief       saba frontend behaviors class.
+ * @ingroup     saba
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class FrontendBehaviors
 {
     public static function templateCustomSortByAlias(ArrayObject $alias): void
@@ -37,9 +34,9 @@ class FrontendBehaviors
         ];
     }
 
-    public static function urlHandlerBeforeGetData(context $_): void
+    public static function urlHandlerBeforeGetData(Ctx $_): void
     {
-        if (is_null(dcCore::app()->blog) || is_null(dcCore::app()->ctx)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
@@ -47,11 +44,11 @@ class FrontendBehaviors
 
         if (!empty($_GET['q']) && 1 < strlen($_GET['q'])) {
             # pagintaion
-            $_page_number = dcCore::app()->public->getPageNumber();
+            $_page_number = App::frontend()->getPageNumber();
             if ($_page_number < 1) {
                 $_page_number = 1;
             }
-            $limit = (int) dcCore::app()->ctx->__get('nb_entry_per_page');
+            $limit = (int) App::frontend()->context()->__get('nb_entry_per_page');
 
             $params = [
                 'limit'  => [(($_page_number - 1) * $limit), $limit],
@@ -65,23 +62,23 @@ class FrontendBehaviors
             $options['q'] = rawurldecode($_GET['q']);
 
             # count
-            dcCore::app()->public->search = rawurldecode($_GET['q']);
-            if (dcCore::app()->public->search) {
-                dcCore::app()->public->search_count = dcCore::app()->blog->getPosts($params, true)->f(0);
+            App::frontend()->search = rawurldecode($_GET['q']);
+            if (App::frontend()->search) {
+                App::frontend()->search_count = App::blog()->getPosts($params, true)->f(0);
             }
 
             # get posts
-            $posts = dcCore::app()->blog->getPosts($params);
+            $posts = App::blog()->getPosts($params);
             if ($posts->isEmpty()) { // hack: don't breack context
                 $params = ['limit' => $params['limit']];
-                $posts  = dcCore::app()->blog->getPosts($params);
+                $posts  = App::blog()->getPosts($params);
             }
-            dcCore::app()->ctx->__set('post_params', $params);
-            dcCore::app()->ctx->__set('posts', $posts);
+            App::frontend()->context()->__set('post_params', $params);
+            App::frontend()->context()->__set('posts', $posts);
 
             unset($params);
         }
-        dcCore::app()->ctx->__set('saba_options', $options);
+        App::frontend()->context()->__set('saba_options', $options);
     }
 
     public static function getPostsParams(ArrayObject $params): array
@@ -135,7 +132,7 @@ class FrontendBehaviors
 
         # post types
         if (!empty($get['q_type']) && is_array($get['q_type'])) {
-            $types = dcCore::app()->getPostTypes();
+            $types = App::postTypes()->getPostTypes();
             foreach ($get['q_type'] as $v) {
                 if (!$types[$v]) {
                     continue;
@@ -168,7 +165,7 @@ class FrontendBehaviors
         if (!empty($get['q_user']) && is_array($get['q_user'])) {
             $users = [];
             foreach ($get['q_user'] as $v) {
-                $users[]             = "U.user_id = '" . dcCore::app()->con->escapeStr((string) $v) . "'";
+                $users[]             = "U.user_id = '" . App::con()->escapeStr((string) $v) . "'";
                 $options['q_user'][] = $v;
             }
             $params['sql'] .= 'AND (' . implode(' OR ', $users) . ') ';
@@ -183,7 +180,7 @@ class FrontendBehaviors
         $orders = Utils::getSabaFormOrders();
         if (!empty($get['q_order']) && in_array($get['q_order'], $orders)) {
             $options['q_order'] = $get['q_order'];
-            $params['order']    = dcCore::app()->tpl->getSortByStr(
+            $params['order']    = App::frontend()->template()->getSortByStr(
                 new ArrayObject(['sortby' => $get['q_order'], 'order' => $sort]),
                 'post'
             ); //?! post_type
@@ -211,7 +208,7 @@ class FrontendBehaviors
             $AND   = [];
             $words = Text::splitWords($sentence);
             foreach ($words as $word) {
-                $AND[] = "post_words LIKE '%" . dcCore::app()->con->escapeStr((string) $word) . "%'";
+                $AND[] = "post_words LIKE '%" . App::con()->escapeStr((string) $word) . "%'";
             }
             if (!empty($AND)) {
                 $OR[] = ' (' . implode(' AND ', $AND) . ') ';

@@ -1,21 +1,18 @@
 <?php
-/**
- * @brief saba, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
-use dcCore;
+use Dotclear\App;
 
+/**
+ * @brief       saba utils class.
+ * @ingroup     saba
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class Utils
 {
     public static function getSabaDefaultPostsOptions(): array
@@ -76,7 +73,7 @@ class Utils
         // todo: add behavior for unknow types
 
         $rs    = [];
-        $types = dcCore::app()->getPostTypes();
+        $types = App::postTypes()->getPostTypes();
 
         foreach ($types as $k => $v) {
             if (!$v['public_url']) {
