@@ -110,7 +110,7 @@ class Widgets
                     $ct .= '<li><label><input name="q_order" type="radio" value="' .
                         $v . '" ' .
                         ($v == $saba_options['q_order'] ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML($k) . '</label></li>';
+                        '/> ' . Html::escapeHTML((string) $k) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $ct .= '<li><label><input name="q_rev" type="checkbox" value="1" ' .
@@ -132,7 +132,7 @@ class Widgets
                     $ct .= '<li><label><input name="q_opt[]" type="checkbox" value="' .
                         $v . '" ' .
                         (in_array($v, $saba_options['q_opt']) ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML($k) . '</label></li>';
+                        '/> ' . Html::escapeHTML((string) $k) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $res .= $w->renderTitle(__('Filter options')) . sprintf('<ul>%s</ul>', $ct);
@@ -147,7 +147,7 @@ class Widgets
                     $ct .= '<li><label><input name="q_age" type="radio" value="' .
                         $v . '" ' .
                         ($v == $saba_options['q_age'] ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML($k) . '</label></li>';
+                        '/> ' . Html::escapeHTML((string) $k) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $res .= $w->renderTitle(__('Filter by age')) . sprintf('<ul>%s</ul>', $ct);
@@ -166,7 +166,7 @@ class Widgets
                     $ct .= '<li><label><input name="q_type[]" type="checkbox" value="' .
                         $v . '" ' .
                         (in_array($v, $saba_options['q_type']) ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML($k) . '</label></li>';
+                        '/> ' . Html::escapeHTML((string) $k) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $res .= $w->renderTitle(__('Filter by type')) . sprintf('<ul>%s</ul>', $ct);
@@ -186,7 +186,7 @@ class Widgets
                     $ct .= '<li><label><input name="q_cat[]" type="checkbox" value="' .
                         $rs->f('cat_id') . '" ' .
                         (in_array($rs->f('cat_id'), $saba_options['q_cat']) ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML($rs->f('cat_title')) . '</label></li>';
+                        '/> ' . Html::escapeHTML((string) $rs->f('cat_title')) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $res .= $w->renderTitle(__('Filter by category')) . sprintf('<ul>%s</ul>', $ct);

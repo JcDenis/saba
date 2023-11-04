@@ -20,6 +20,9 @@ use Dotclear\Core\Frontend\Ctx;
  */
 class FrontendBehaviors
 {
+    /**
+     * @param   ArrayObject<string, mixed>  $alias
+     */
     public static function templateCustomSortByAlias(ArrayObject $alias): void
     {
         $alias['post'] = [
@@ -81,6 +84,11 @@ class FrontendBehaviors
         App::frontend()->context()->__set('saba_options', $options);
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>  $params
+     *
+     * @return  array<string, mixed>
+     */
     public static function getPostsParams(ArrayObject $params): array
     {
         if (!isset($params['sql'])) {
@@ -91,7 +99,7 @@ class FrontendBehaviors
 
         # retreive _GET
         $qs = $_SERVER['QUERY_STRING'];
-        $qs = preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
+        $qs = (string) preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
         parse_str($qs, $get);
 
         # search string
@@ -189,7 +197,11 @@ class FrontendBehaviors
         return $options;
     }
 
-    # Ajouter la condition "ou" à la recherche
+    /**
+     * Ajouter la condition "ou" à la recherche.
+     *
+     * @param   ArrayObject<string, mixed>  $p
+     */
     public static function coreBlogBeforeGetPosts(ArrayObject $p): void
     {
         if (empty($p['search'])) {

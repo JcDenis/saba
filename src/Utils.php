@@ -15,6 +15,9 @@ use Dotclear\App;
  */
 class Utils
 {
+    /**
+     * @return  array<string, mixed>
+     */
     public static function getSabaDefaultPostsOptions(): array
     {
         return [
@@ -29,6 +32,9 @@ class Utils
         ];
     }
 
+    /**
+     * @return  array<string, string>
+     */
     public static function getSabaFormOptions(): array
     {
         return [
@@ -38,6 +44,9 @@ class Utils
         ];
     }
 
+    /**
+     * @return  array<string, string>
+     */
     public static function getSabaFormOrders(): array
     {
         return [
@@ -51,6 +60,9 @@ class Utils
         ];
     }
 
+    /**
+     * @return  array<string, string>
+     */
     public static function getSabaFormAges(): array
     {
         return [
@@ -62,6 +74,9 @@ class Utils
         ];
     }
 
+    /**
+     * @return  array<string, string>
+     */
     public static function getSabaFormTypes(): array
     {
         $know = [
