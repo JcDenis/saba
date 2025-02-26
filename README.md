@@ -1,10 +1,10 @@
 # README
 
-[![Release](https://img.shields.io/badge/release-2023.11.04-a2cbe9.svg)](https://git.dotclear.watch/JcDenis/saba/releases)
+[![Release](https://img.shields.io/badge/release-2023.11.04-a2cbe9.svg)](https://github.com/JcDenis/saba/releases)
 ![Date](https://img.shields.io/badge/date-2023.11.04-c44d58.svg)
 [![Dotclear](https://img.shields.io/badge/dotclear-v2.28-137bbb.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-9ac123.svg)](https://plugins.dotaddict.org/dc2/details/saba)
-[![License](https://img.shields.io/badge/license-GPL--2.0-ececec.svg)](https://git.dotclear.watch/JcDenis/saba/src/branch/master/LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--2.0-ececec.svg)](https://github.com/JcDenis/saba/src/branch/master/LICENSE)
 
 ## ABOUT
 
@@ -33,10 +33,10 @@ You can find exemple in plugins/saba/default-tempaltes.
 
 ## MORE
 
-* [License](https://git.dotclear.watch/JcDenis/saba/src/branch/master/LICENSE)
-* [Packages & details](https://git.dotclear.watch/JcDenis/saba/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/saba))
-* [Sources & contributions](https://git.dotclear.watch/JcDenis/saba) (or on [GitHub](https://github.com/JcDenis/saba))
-* [Issues & security](https://git.dotclear.watch/JcDenis/saba/issues) (or on [GitHub](https://github.com/JcDenis/saba/issues))
+* [License](https://github.com/JcDenis/saba/src/branch/master/LICENSE)
+* [Packages & details](https://github.com/JcDenis/saba/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/saba))
+* [Sources & contributions](https://github.com/JcDenis/saba)
+* [Issues & security](https://github.com/JcDenis/saba/issues)
 
 ## CONTRIBUTORS
 
