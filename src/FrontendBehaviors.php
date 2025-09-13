@@ -6,10 +6,9 @@ namespace Dotclear\Plugin\saba;
 
 use ArrayObject;
 use Dotclear\App;
+use Dotclear\Core\Frontend\Ctx;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Text;
-
-use Dotclear\Core\Frontend\Ctx;
 
 /**
  * @brief       saba frontend behaviors class.
@@ -98,7 +97,7 @@ class FrontendBehaviors
         $params['post_type'] = [];
 
         # retreive _GET
-        $qs = $_SERVER['QUERY_STRING'];
+        $qs = (string) $_SERVER['QUERY_STRING'];
         $qs = (string) preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
         parse_str($qs, $get);
 
@@ -173,7 +172,7 @@ class FrontendBehaviors
         if (!empty($get['q_user']) && is_array($get['q_user'])) {
             $users = [];
             foreach ($get['q_user'] as $v) {
-                $users[]             = "U.user_id = '" . App::con()->escapeStr((string) $v) . "'";
+                $users[]             = "U.user_id = '" . App::db()->con()->escapeStr((string) $v) . "'";
                 $options['q_user'][] = $v;
             }
             $params['sql'] .= 'AND (' . implode(' OR ', $users) . ') ';
@@ -220,7 +219,7 @@ class FrontendBehaviors
             $AND   = [];
             $words = Text::splitWords($sentence);
             foreach ($words as $word) {
-                $AND[] = "post_words LIKE '%" . App::con()->escapeStr((string) $word) . "%'";
+                $AND[] = "post_words LIKE '%" . App::db()->con()->escapeStr((string) $word) . "%'";
             }
             if (!empty($AND)) {
                 $OR[] = ' (' . implode(' AND ', $AND) . ') ';

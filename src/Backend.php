@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\saba;
 
 use Dotclear\App;
-use Dotclear\Core\Process;
-use Dotclear\Helper\Html\Form\{
-    Checkbox,
-    Label,
-    Para
-};
+use Dotclear\Helper\Process\TraitProcess;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Interface\Core\BlogSettingsInterface;
 
 /**
@@ -20,8 +18,10 @@ use Dotclear\Interface\Core\BlogSettingsInterface;
  * @author      Jean-Christian Denis
  * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class Backend extends Process
+class Backend
 {
+    use TraitProcess;
+
     public static function init(): bool
     {
         return self::status(My::checkContext(My::BACKEND));

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\saba;
 
 use Dotclear\App;
-use Dotclear\Core\Process;
-use Dotclear\Plugin\activityReport\{
-    Action,
-    ActivityReport,
-    Group
-};
+use Dotclear\Helper\Process\TraitProcess;
+use Dotclear\Plugin\activityReport\Action;
+use Dotclear\Plugin\activityReport\ActivityReport;
+use Dotclear\Plugin\activityReport\Group;
 
 /**
  * @brief       saba plugin activityReport class.
@@ -21,8 +19,10 @@ use Dotclear\Plugin\activityReport\{
  * @author      Jean-Christian Denis (author)
  * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class ActivityReportAction extends Process
+class ActivityReportAction
 {
+    use TraitProcess;
+
     public static function init(): bool
     {
         return self::status(true);

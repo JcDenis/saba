@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\saba;
 
 use Dotclear\App;
-use Dotclear\Core\Frontend\Url;
 use Exception;
 
 /**
@@ -15,7 +14,7 @@ use Exception;
  * @author      Jean-Christian Denis
  * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class UrlHandler extends Url
+class UrlHandler
 {
     public static function error(?string $args, string $type, Exception $e): void
     {
@@ -35,7 +34,7 @@ class UrlHandler extends Url
             $GLOBALS['_from_error'] = true;
 
             # Serve saba
-            self::serveDocument('saba_404.html');
+            App::url()::serveDocument('saba_404.html');
 
             # stop here
             exit(1);
