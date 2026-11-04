@@ -88,20 +88,34 @@ class Widgets
     {
         if (!App::blog()->isDefined()
             || !App::blog()->settings()->get(My::id())->get('active')
-            || !App::blog()->settings()->get(My::id())->get('error') && App::url()->type == '404'
+            || !App::blog()->settings()->get(My::id())->get('error') && App::url()->getType() == '404'
             || $w->__get('offline')
         ) {
             return '';
         }
 
-        $saba_options = App::frontend()->context()->__get('saba_options') ?? [];
-        if (!is_array($saba_options) || empty($saba_options)) {
-            $saba_options = Utils::getSabaDefaultPostsOptions();
+        $ctx          = App::frontend()->context()->__get('saba_options');
+        $saba_options = Utils::getSabaDefaultPostsOptions();
+        if (is_array($ctx)) {
+            foreach (['q', 'q_age', 'q_order', 'q_rev'] as $k) {
+                if (isset($ctx[$k]) && is_string($ctx[$k])) {
+                    $saba_options[$k] = $ctx[$k];
+                }
+            }
+            foreach (['q_opt', 'q_user', 'q_type'] as $k) {
+                if (isset($ctx[$k]) && is_array($ctx[$k])) {
+                    $saba_options[$k] = array_values(array_filter($ctx[$k], is_string(...)));
+                }
+            }
+            if (isset($ctx['q_cat']) && is_array($ctx['q_cat'])) {
+                $saba_options['q_cat'] = array_values(array_filter($ctx['q_cat'], is_int(...)));
+            }
         }
+        $str = fn (string $k): string => is_string($v = $w->__get($k)) ? $v : '';
         $res = '';
 
         # advanced search only on search page
-        if (App::url()->type == 'search') {
+        if (App::url()->getType() == 'search') {
             # order
             if (!$w->__get('saba_filter_orders')) {
                 $ct = '';
@@ -123,7 +137,7 @@ class Widgets
             # options
             if (!$w->__get('saba_filter_options')) {
                 $ct = '';
-                $rm = explode(',', (string) $w->__get('saba_remove_options'));
+                $rm = explode(',', $str('saba_remove_options'));
 
                 foreach (Utils::getSabaFormOptions() as $k => $v) {
                     if (in_array($v, $rm)) {
@@ -157,7 +171,7 @@ class Widgets
             # types
             if (!$w->__get('saba_filter_types')) {
                 $ct = '';
-                $rm = explode(',', $w->__get('saba_remove_types'));
+                $rm = explode(',', $str('saba_remove_types'));
 
                 foreach (Utils::getSabaFormTypes() as $k => $v) {
                     if (in_array($v, $rm)) {
@@ -176,17 +190,17 @@ class Widgets
             # categories
             if (!$w->__get('saba_filter_categories')) {
                 $ct = '';
-                $rm = explode(',', $w->__get('saba_remove_categories'));
+                $rm = explode(',', $str('saba_remove_categories'));
                 $rs = App::blog()->getCategories();
 
                 while ($rs->fetch()) {
-                    if (in_array($rs->f('cat_id'), $rm) || in_array($rs->f('cat_url'), $rm)) {
+                    if (in_array((string) $rs->intField('cat_id'), $rm) || in_array($rs->strField('cat_url'), $rm)) {
                         continue;
                     }
                     $ct .= '<li><label><input name="q_cat[]" type="checkbox" value="' .
-                        $rs->f('cat_id') . '" ' .
-                        (in_array($rs->f('cat_id'), $saba_options['q_cat']) ? 'checked="checked" ' : '') .
-                        '/> ' . Html::escapeHTML((string) $rs->f('cat_title')) . '</label></li>';
+                        $rs->intField('cat_id') . '" ' .
+                        (in_array($rs->intField('cat_id'), $saba_options['q_cat'], true) ? 'checked="checked" ' : '') .
+                        '/> ' . Html::escapeHTML($rs->strField('cat_title')) . '</label></li>';
                 }
                 if (!empty($ct)) {
                     $res .= $w->renderTitle(__('Filter by category')) . sprintf('<ul>%s</ul>', $ct);
@@ -196,18 +210,18 @@ class Widgets
             # authors
             if (!$w->__get('saba_filter_authors')) {
                 $ct = '';
-                $rm = explode(',', $w->__get('saba_remove_authors'));
+                $rm = explode(',', $str('saba_remove_authors'));
                 $rs = App::blog()->getPostsUsers();
 
                 while ($rs->fetch()) {
-                    if (in_array($rs->f('user_id'), $rm)) {
+                    if (in_array($rs->strField('user_id'), $rm)) {
                         continue;
                     }
                     $ct .= sprintf(
                         '<li><label><input name="q_user[]" type="checkbox" value="%s" %s/> %s</label></li>',
-                        $rs->f('user_id'),
-                        in_array($rs->f('user_id'), $saba_options['q_user']) ? 'checked="checked" ' : '',
-                        Html::escapeHTML(App::users()->getUserCN($rs->f('user_id'), $rs->f('user_name'), $rs->f('user_firstname'), $rs->f('user_displayname')))
+                        Html::escapeHTML($rs->strField('user_id')),
+                        in_array($rs->strField('user_id'), $saba_options['q_user'], true) ? 'checked="checked" ' : '',
+                        Html::escapeHTML(App::users()->getUserCN($rs->strField('user_id'), $rs->strField('user_name'), $rs->strField('user_firstname'), $rs->strField('user_displayname')))
                     );
                 }
                 if (!empty($ct)) {
@@ -218,13 +232,13 @@ class Widgets
 
         return $w->renderDiv(
             (bool) $w->__get('content_only'),
-            $w->__get('class'),
+            $str('class'),
             'id="search"',
-            ($w->__get('title') ? $w->renderTitle('<label for="q">' . Html::escapeHTML($w->__get('title')) . '</label>') : '') .
+            ($str('title') !== '' ? $w->renderTitle('<label for="q">' . Html::escapeHTML($str('title')) . '</label>') : '') .
             '<form action="' . App::blog()->url() . '" method="get" role="search">' .
             '<p><input type="text" size="10" maxlength="255" id="q" name="q" value="' .
             Html::escapeHTML($saba_options['q']) . '" ' .
-            ($w->__get('placeholder') ? 'placeholder="' . Html::escapeHTML($w->__get('placeholder')) . '"' : '') .
+            ($str('placeholder') !== '' ? 'placeholder="' . Html::escapeHTML($str('placeholder')) . '"' : '') .
             ' aria-label="' . __('Search') . '"/> ' .
             '<input type="submit" class="submit" value="ok" title="' . __('Search') . '" /></p>' .
             $res .

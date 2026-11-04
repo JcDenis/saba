@@ -42,7 +42,7 @@ class ActivityReportAction
             __('New 404 error page at "%s"'),
             'sabaBeforeErrorDocument',
             function () {
-                $logs = [App::blog()->url() . urldecode($_SERVER['QUERY_STRING'])];
+                $logs = [App::blog()->url() . urldecode(is_string($_SERVER['QUERY_STRING'] ?? null) ? $_SERVER['QUERY_STRING'] : '')];
                 ActivityReport::instance()->addLog(My::id(), 'saba404', $logs);
             }
         ));

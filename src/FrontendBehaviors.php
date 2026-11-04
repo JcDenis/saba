@@ -43,31 +43,32 @@ class FrontendBehaviors
         }
 
         $options = Utils::getSabaDefaultPostsOptions();
+        $q       = is_string($_GET['q'] ?? null) ? $_GET['q'] : '';
 
-        if (!empty($_GET['q']) && 1 < strlen($_GET['q'])) {
+        if (1 < strlen($q)) {
             # pagintaion
             $_page_number = App::frontend()->getPageNumber();
             if ($_page_number < 1) {
                 $_page_number = 1;
             }
-            $limit = (int) App::frontend()->context()->__get('nb_entry_per_page');
-
-            $params = [
-                'limit'  => [(($_page_number - 1) * $limit), $limit],
-                'search' => rawurldecode($_GET['q']),
-            ];
+            $limit = App::frontend()->context()->__get('nb_entry_per_page');
+            $limit = is_numeric($limit) ? (int) $limit : 10;
 
             # search string
-            $params = new ArrayObject($params);
+            /**
+             * @var ArrayObject<string, mixed>
+             */
+            $params = new ArrayObject([
+                'limit'  => [(($_page_number - 1) * $limit), $limit],
+                'search' => rawurldecode($q),
+            ]);
 
             $options      = self::getPostsParams($params);
-            $options['q'] = rawurldecode($_GET['q']);
+            $options['q'] = rawurldecode($q);
 
             # count
-            App::frontend()->search = rawurldecode($_GET['q']);
-            if (App::frontend()->search) {
-                App::frontend()->search_count = App::blog()->getPosts($params, true)->f(0);
-            }
+            App::frontend()->search       = rawurldecode($q);
+            App::frontend()->search_count = (string) App::blog()->getPosts($params, true)->intField(0);
 
             # get posts
             $posts = App::blog()->getPosts($params);
@@ -86,24 +87,21 @@ class FrontendBehaviors
     /**
      * @param   ArrayObject<string, mixed>  $params
      *
-     * @return  array<string, mixed>
+     * @return  array{q: string, q_opt: array<int, string>, q_cat: array<int, int>, q_age: string, q_user: array<int, string>, q_order: string, q_rev: string, q_type: array<int, string>}
      */
     public static function getPostsParams(ArrayObject $params): array
     {
-        if (!isset($params['sql'])) {
-            $params['sql'] = '';
-        }
-
-        $params['post_type'] = [];
+        $sql        = is_string($params['sql'] ?? null) ? $params['sql'] : '';
+        $post_types = [];
 
         # retreive _GET
-        $qs = (string) $_SERVER['QUERY_STRING'];
+        $qs = is_string($_SERVER['QUERY_STRING'] ?? null) ? $_SERVER['QUERY_STRING'] : '';
         $qs = (string) preg_replace('#(^|/)page/([0-9]+)#', '', $qs);
         parse_str($qs, $get);
 
         # search string
         $options      = Utils::getSabaDefaultPostsOptions();
-        $options['q'] = $params['search'];
+        $options['q'] = is_string($params['search'] ?? null) ? $params['search'] : '';
 
         # options
         if (!empty($get['q_opt']) && is_array($get['q_opt'])) {
@@ -113,11 +111,11 @@ class FrontendBehaviors
             }
             if (in_array('comment', $get['q_opt'])) {
                 $options['q_opt'][] = 'comment';
-                $params['sql']      = 'AND nb_comment > 0 ';
+                $sql .= 'AND nb_comment > 0 ';
             }
             if (in_array('trackback', $get['q_opt'])) {
                 $options['q_opt'][] = 'trackback';
-                $params['sql']      = 'AND nb_trackback > 0';
+                $sql .= 'AND nb_trackback > 0 ';
             }
         }
 
@@ -125,15 +123,15 @@ class FrontendBehaviors
         if (!empty($get['q_cat']) && is_array($get['q_cat'])) {
             $cats = [];
             foreach ($get['q_cat'] as $v) {
-                $v = abs((int) $v);
+                $v = is_numeric($v) ? abs((int) $v) : 0;
                 if (!$v) {
                     continue;
                 }
-                $cats[]             = "C.cat_id = '" . $v . "'";
+                $cats[]             = 'C.cat_id = ' . $v;
                 $options['q_cat'][] = $v;
             }
             if (!empty($cats)) {
-                $params['sql'] .= 'AND (' . implode(' OR ', $cats) . ') ';
+                $sql .= 'AND (' . implode(' OR ', $cats) . ') ';
             }
         }
 
@@ -141,14 +139,14 @@ class FrontendBehaviors
         if (!empty($get['q_type']) && is_array($get['q_type'])) {
             $types = App::postTypes()->getPostTypes();
             foreach ($get['q_type'] as $v) {
-                if (!$types[$v]) {
+                if (!is_string($v) || !isset($types[$v])) {
                     continue;
                 }
-                $options['q_type'][]   = $v;
-                $params['post_type'][] = $v;
+                $options['q_type'][] = $v;
+                $post_types[]        = $v;
             }
         } else {
-            $params['post_type'][] = 'post';
+            $post_types[] = 'post';
         }
 
         # age
@@ -158,13 +156,13 @@ class FrontendBehaviors
             $ts               = time();
             $options['q_age'] = $get['q_age'];
 
-            if ($age[0]) {
-                $params['sql'] .= "AND P.post_dt < '" .
-                    Date::str('%Y-%m-%d %H:%m:%S', $ts - (int) $age[0]) . "' ";
+            if (!empty($age[0])) {
+                $sql .= "AND P.post_dt < '" .
+                    Date::str('%Y-%m-%d %H:%M:%S', $ts - (int) $age[0]) . "' ";
             }
-            if ($age[1]) {
-                $params['sql'] .= "AND P.post_dt > '" .
-                    Date::str('%Y-%m-%d %H:%m:%S', $ts - (int) $age[1]) . "' ";
+            if (!empty($age[1])) {
+                $sql .= "AND P.post_dt > '" .
+                    Date::str('%Y-%m-%d %H:%M:%S', $ts - (int) $age[1]) . "' ";
             }
         }
 
@@ -172,10 +170,15 @@ class FrontendBehaviors
         if (!empty($get['q_user']) && is_array($get['q_user'])) {
             $users = [];
             foreach ($get['q_user'] as $v) {
-                $users[]             = "U.user_id = '" . App::db()->con()->escapeStr((string) $v) . "'";
+                if (!is_string($v) || $v === '') {
+                    continue;
+                }
+                $users[]             = "U.user_id = '" . App::db()->con()->escapeStr($v) . "'";
                 $options['q_user'][] = $v;
             }
-            $params['sql'] .= 'AND (' . implode(' OR ', $users) . ') ';
+            if ($users !== []) {
+                $sql .= 'AND (' . implode(' OR ', $users) . ') ';
+            }
         }
 
         #order
@@ -185,19 +188,23 @@ class FrontendBehaviors
             $sort             = 'asc';
         }
         $orders = Utils::getSabaFormOrders();
-        if (!empty($get['q_order']) && in_array($get['q_order'], $orders)) {
+        if (!empty($get['q_order']) && is_string($get['q_order']) && in_array($get['q_order'], $orders)) {
             $options['q_order'] = $get['q_order'];
-            $params['order']    = App::frontend()->template()->getSortByStr(
-                new ArrayObject(['sortby' => $get['q_order'], 'order' => $sort]),
-                'post'
-            ); //?! post_type
+            /**
+             * @var ArrayObject<string, mixed>
+             */
+            $attr            = new ArrayObject(['sortby' => $get['q_order'], 'order' => $sort]);
+            $params['order'] = App::frontend()->template()->getSortByStr($attr, 'post'); //?! post_type
         }
+
+        $params['sql']       = $sql;
+        $params['post_type'] = $post_types;
 
         return $options;
     }
 
     /**
-     * Ajouter la condition "ou" à la recherche.
+     * Ajouter la condition "ou" Ã  la recherche.
      *
      * @param   ArrayObject<string, mixed>  $p
      */
@@ -211,9 +218,10 @@ class FrontendBehaviors
 
         $OR = [];
         # decoupe un peu plus la recherche
-        $splits = preg_split("#[\s//,-_]+#", $p['search']);
+        $search = is_string($p['search']) ? $p['search'] : '';
+        $splits = preg_split("#[\s//,-_]+#", $search);
         if (!$splits) {
-            $splits = explode(',', $p['search']);
+            $splits = explode(',', $search);
         }
         foreach ($splits as $sentence) {
             $AND   = [];
@@ -227,7 +235,7 @@ class FrontendBehaviors
         }
         if (!empty($OR)) {
             $p['search'] = '';
-            $p['sql'] .= 'AND (' . implode(' OR ', $OR) . ') ';
+            $p['sql']    = (is_string($p['sql'] ?? null) ? $p['sql'] : '') . 'AND (' . implode(' OR ', $OR) . ') ';
         }
     }
 }

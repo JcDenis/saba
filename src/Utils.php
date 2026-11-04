@@ -16,7 +16,7 @@ use Dotclear\App;
 class Utils
 {
     /**
-     * @return  array<string, mixed>
+     * @return  array{q: string, q_opt: array<int, string>, q_cat: array<int, int>, q_age: string, q_user: array<int, string>, q_order: string, q_rev: string, q_type: array<int, string>}
      */
     public static function getSabaDefaultPostsOptions(): array
     {
