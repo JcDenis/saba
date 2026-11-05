@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/jcdenis/saba?color=lightblue)](https://github.com/JcDenis/saba/releases)
 ![Date](https://img.shields.io/github/release-date/jcdenis/saba?color=red)
 [![Dotclear](https://img.shields.io/badge/dotclear-v2.39-137bbb.svg)](https://fr.dotclear.org/download)
-[![Dotaddict](https://img.shields.io/badge/dotaddict-official-9ac123.svg)](https://plugins.dotaddict.org/dc2/details/saba)
+[![Repository](https://img.shields.io/badge/repository-official-9ac123.svg)](https://dotclear.org/plugin/detail/saba)
 [![License](https://img.shields.io/github/license/jcdenis/saba?color=white)](https://github.com/JcDenis/saba/blob/master/LICENSE)
 
 ## ABOUT
@@ -22,7 +22,7 @@ _saba_ is a plugin for the open-source web publishing software called [Dotclear]
 ## USAGE
 
 First install saba, mannualy from a zip package or from 
-Dotaddict repository. (See Dotclear's documentation to know how do this)
+Dotclear plugins repository. (See Dotclear's documentation to know how do this)
 
 Go to ''Blog preference'', active plugin saba for search and 404,
 go to ''Widgets'', add and configure ''Advanced search'' widget.
@@ -34,7 +34,7 @@ You can find exemple in plugins/saba/default-tempaltes.
 ## MORE
 
 * [License](https://github.com/JcDenis/saba/blob/master/LICENSE)
-* [Packages & details](https://github.com/JcDenis/saba/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/saba))
+* [Packages & details](https://github.com/JcDenis/saba/releases) (or on [Repository](https://dotclear.org/plugin/detail/saba))
 * [Sources & contributions](https://github.com/JcDenis/saba)
 * [Issues & security](https://github.com/JcDenis/saba/issues)
 
