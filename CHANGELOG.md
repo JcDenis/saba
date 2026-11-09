@@ -1,3 +1,9 @@
+saba 2026.11.09
+===========================================================
+* Fix DA URLs
+* Add Claude to contributors
+* Bump Dotclear from 2.39 to 2.40 (search count is an integer)
+
 saba 2026.11.05
 ===========================================================
 * Bump Dotclear from 2.36 to 2.39
