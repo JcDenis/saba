@@ -68,7 +68,7 @@ class FrontendBehaviors
 
             # count
             App::frontend()->search       = rawurldecode($q);
-            App::frontend()->search_count = (string) App::blog()->getPosts($params, true)->intField(0);
+            App::frontend()->search_count = App::blog()->getPosts($params, true)->intField(0);
 
             # get posts
             $posts = App::blog()->getPosts($params);
