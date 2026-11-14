@@ -7,7 +7,7 @@
     <desc>Search across blog archive</desc>
     <file>https://github.com/JcDenis/saba/releases/download/v2026.11.09/plugin-saba.zip</file>
     <da:dcmin>2.40</da:dcmin>
-    <da:details>https://github.com/JcDenis/saba/src/branch/master/README.md</da:details>
+    <da:details>https://github.com/JcDenis/saba/blob/master/README.md</da:details>
     <da:support>https://github.com/JcDenis/saba/issues</da:support>
   </module>
 </modules>
