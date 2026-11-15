@@ -12,6 +12,8 @@ _saba_ is a plugin for the open-source web publishing software called [Dotclear]
 
 > Replace public search page and 404 page by a custom page that show related entries to visitor.
 
+A [user guide in French](https://github.com/JcDenis/saba/blob/master/docs/fr/utilisation.md) is available.
+
 ## REQUIREMENTS
 
 * Dotclear 2.40
@@ -33,6 +35,7 @@ You can find exemple in plugins/saba/default-tempaltes.
 
 ## MORE
 
+* [User guide (in French)](https://github.com/JcDenis/saba/blob/master/docs/fr/utilisation.md)
 * [License](https://github.com/JcDenis/saba/blob/master/LICENSE)
 * [Packages & details](https://github.com/JcDenis/saba/releases) (or on [Repository](https://dotclear.org/plugin/detail/saba))
 * [Sources & contributions](https://github.com/JcDenis/saba)
