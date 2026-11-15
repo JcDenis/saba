@@ -37,7 +37,16 @@ class Frontend
             App::url()->registerError(UrlHandler::error(...));
         }
 
-        App::frontend()->template()->appendPath(My::path() . DIRECTORY_SEPARATOR . 'default-templates');
+        // Templates of the theme templates set first, then generic ones (themes are loaded after plugins)
+        App::behavior()->addBehavior('publicPrependV2', function (): void {
+            $theme  = (string) App::blog()->settings()->get('system')->getStr('theme');
+            $tplset = App::themes()->moduleInfo($theme, 'tplset');
+            $path   = My::path() . DIRECTORY_SEPARATOR . 'default-templates';
+            if (is_string($tplset) && $tplset !== '' && is_dir($path . DIRECTORY_SEPARATOR . $tplset)) {
+                App::frontend()->template()->appendPath($path . DIRECTORY_SEPARATOR . $tplset);
+            }
+            App::frontend()->template()->appendPath($path);
+        });
 
         App::behavior()->addBehaviors([
             'templateCustomSortByAlias' => FrontendBehaviors::templateCustomSortByAlias(...),

@@ -19,8 +19,8 @@ class UrlHandler
     public static function error(?string $args, string $type, Exception $e): void
     {
         if ($e->getCode() == 404) {
-            $q = explode('/', (string) $args);
-            if (count($q) < 2) {
+            $q = array_values(array_filter(explode('/', (string) $args), fn (string $v): bool => trim($v) !== ''));
+            if ($q === []) {
                 return;
             }
 
@@ -33,8 +33,9 @@ class UrlHandler
             # Claim comes from 404
             $GLOBALS['_from_error'] = true;
 
-            # Serve saba
-            App::url()::serveDocument('saba_404.html');
+            # Serve saba, as a page not found
+            http_response_code(404);
+            App::url()::serveDocument('saba_404.html', 'text/html', false, false);
 
             # stop here
             exit(1);

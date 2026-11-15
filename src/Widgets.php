@@ -40,28 +40,28 @@ class Widgets
                 0,
                 'check'
             )
-            ->setting('saba_remove_types', __('Hidden types:'), '')
+            ->setting('saba_remove_types', __('Hidden types (comma separated list of types, e.g. page,pollsfactory):'), '')
             ->setting(
                 'saba_filter_options',
                 __('Disable filter on post options'),
                 0,
                 'check'
             )
-            ->setting('saba_remove_options', __('Hidden options:'), '')
+            ->setting('saba_remove_options', __('Hidden options (comma separated list among selected, comment, trackback):'), '')
             ->setting(
                 'saba_filter_categories',
                 __('Disable filter on categories'),
                 0,
                 'check'
             )
-            ->setting('saba_remove_categories', __('Hidden categories:'), '')
+            ->setting('saba_remove_categories', __('Hidden categories (comma separated list of categories IDs or URLs):'), '')
             ->setting(
                 'saba_filter_authors',
                 __('Disable filter on authors'),
                 0,
                 'check'
             )
-            ->setting('saba_remove_authors', __('Hidden authors:'), '')
+            ->setting('saba_remove_authors', __('Hidden authors (comma separated list of users IDs):'), '')
             ->setting(
                 'saba_filter_orders',
                 __('Disable filter on order'),
@@ -137,7 +137,7 @@ class Widgets
             # options
             if (!$w->__get('saba_filter_options')) {
                 $ct = '';
-                $rm = explode(',', $str('saba_remove_options'));
+                $rm = self::splitList($str('saba_remove_options'));
 
                 foreach (Utils::getSabaFormOptions() as $k => $v) {
                     if (in_array($v, $rm)) {
@@ -171,7 +171,7 @@ class Widgets
             # types
             if (!$w->__get('saba_filter_types')) {
                 $ct = '';
-                $rm = explode(',', $str('saba_remove_types'));
+                $rm = self::splitList($str('saba_remove_types'));
 
                 foreach (Utils::getSabaFormTypes() as $k => $v) {
                     if (in_array($v, $rm)) {
@@ -190,7 +190,7 @@ class Widgets
             # categories
             if (!$w->__get('saba_filter_categories')) {
                 $ct = '';
-                $rm = explode(',', $str('saba_remove_categories'));
+                $rm = self::splitList($str('saba_remove_categories'));
                 $rs = App::blog()->getCategories();
 
                 while ($rs->fetch()) {
@@ -210,7 +210,7 @@ class Widgets
             # authors
             if (!$w->__get('saba_filter_authors')) {
                 $ct = '';
-                $rm = explode(',', $str('saba_remove_authors'));
+                $rm = self::splitList($str('saba_remove_authors'));
                 $rs = App::blog()->getPostsUsers();
 
                 while ($rs->fetch()) {
@@ -244,5 +244,15 @@ class Widgets
             $res .
             '</form>'
         );
+    }
+
+    /**
+     * Split a comma separated list, without spaces and empty values.
+     *
+     * @return  array<int, string>
+     */
+    private static function splitList(string $list): array
+    {
+        return array_values(array_filter(array_map(trim(...), explode(',', $list)), fn (string $v): bool => $v !== ''));
     }
 }

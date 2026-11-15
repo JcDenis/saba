@@ -219,7 +219,7 @@ class FrontendBehaviors
         $OR = [];
         # decoupe un peu plus la recherche
         $search = is_string($p['search']) ? $p['search'] : '';
-        $splits = preg_split("#[\s//,-_]+#", $search);
+        $splits = preg_split("#[\s/,_-]+#", $search);
         if (!$splits) {
             $splits = explode(',', $search);
         }
