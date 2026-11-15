@@ -1,3 +1,10 @@
+saba 2026.11.15
+===========================================================
+* Update requirements in README (Dotclear 2.40, PHP 8.2)
+* [fix] 404 suggestions with HTTP status 404 and for any address, templates of theme set used, search words split
+* [lang] Public translations in main.po, consistent French labels, help for hidden lists
+* [docs] Add a user guide in French, with screenshots
+
 saba 2026.11.09
 ===========================================================
 * Fix DA URLs
