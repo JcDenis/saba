@@ -28,11 +28,13 @@ Required Dotclear and PHP versions: see `_define.php`.
 * `src/Widgets.php`: widgets definition and rendering.
 * `default-templates/`: public templates.
 * Widgets: `saba`.
-* Behaviors used: `adminBlogPreferencesFormV2`, `adminBeforeBlogSettingsUpdate`, `initWidgets`, `urlHandlerBeforeGetData`, `coreBlogBeforeGetPosts`.
+* Behaviors used: `adminBlogPreferencesFormV2`, `adminBeforeBlogSettingsUpdate`, `initWidgets`, `urlHandlerBeforeGetData`, `coreBlogBeforeGetPosts`, `templateCustomSortByAlias`, `publicPrependV2`.
 
 ## Pitfalls
 
-* None recorded yet: add here the traps met while working on the module.
+* Public texts must be in `locales/*/main.po`: the core loads only `main` for plugins, on the public side too.
+* Templates of the theme templates set (`default-templates/<tplset>/`) are added on `publicPrependV2`, because themes are loaded after plugins.
+* The 404 page with suggestions must keep the HTTP status 404.
 
 ## Testing
 
