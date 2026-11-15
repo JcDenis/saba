@@ -111,13 +111,13 @@ msgid "Filter by author"
 msgstr "Filtrer par auteur"
 
 msgid "Selected entry"
-msgstr "Billet sélectionné"
+msgstr "Entrée sélectionnée"
 
 msgid "Title"
 msgstr "Titre"
 
 msgid "Author"
-msgstr "Auteur"
+msgstr "Auteur·rice"
 
 msgid "Date"
 msgstr "Date"
@@ -126,7 +126,7 @@ msgid "Update"
 msgstr "Mise à jour"
 
 msgid "Entry"
-msgstr "Billet"
+msgstr "Entrée"
 
 msgid "Page"
 msgstr "Page"
