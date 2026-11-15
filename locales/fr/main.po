@@ -17,10 +17,10 @@ msgid "Enable advanced search on this blog"
 msgstr "Activer la recherche avancée sur ce blog"
 
 msgid "Enable suggestion for page 404"
-msgstr "Activer la suggestion sur la page 404"
+msgstr "Activer les suggestions sur la page 404"
 
 msgid "This suggests visitors some posts on page 404."
-msgstr "Ceci suggère au visiteurs des billets sur la page 404."
+msgstr "Suggère aux visiteurs des billets proches de l'adresse demandée sur la page 404."
 
 msgid "404 error (saba)"
 msgstr "Erreur 404 (saba)"
@@ -29,38 +29,122 @@ msgid "Advanced search"
 msgstr "Recherche avancée"
 
 msgid "Add more search options on public side"
-msgstr "Ajoute plus d'options de recherche"
+msgstr "Ajoute des options de recherche sur le site public"
 
 msgid "Disable filter on post types"
-msgstr "Désactiver le filtre de type de billets"
+msgstr "Désactiver le filtre par type"
 
-msgid "Hidden types:"
-msgstr "Billets cachés :"
 
 msgid "Disable filter on post options"
-msgstr "Désactiver le filtre des options de billet"
+msgstr "Désactiver le filtre par option"
 
-msgid "Hidden options:"
-msgstr "Options cachées :"
 
 msgid "Disable filter on categories"
-msgstr "Désactiver le filtre de catégories"
+msgstr "Désactiver le filtre par catégorie"
 
-msgid "Hidden categories:"
-msgstr "Catégories cachées"
 
 msgid "Disable filter on authors"
-msgstr "Désactiver le filtre d'auteurs"
+msgstr "Désactiver le filtre par auteur"
 
-msgid "Hidden authors:"
-msgstr "Auteurs cachés"
 
 msgid "Disable filter on order"
-msgstr "Désactiver le filtre d'ordre"
+msgstr "Désactiver le tri"
 
 msgid "Disable filter on age"
-msgstr "Désactiver le filtre de date"
+msgstr "Désactiver le filtre par date"
 
 msgid "Suggested items:"
-msgstr "Articles suggérés :"
+msgstr "Billets suggérés :"
 
+msgid "With comments"
+msgstr "Avec commentaires"
+
+msgid "With trackbacks"
+msgstr "Avec rétroliens"
+
+msgid "Comments count"
+msgstr "Nombre de commentaires"
+
+msgid "Trackbacks count"
+msgstr "Nombre de rétroliens"
+
+msgid "All"
+msgstr "Tous"
+
+msgid "Less than a month"
+msgstr "Moins d'un mois"
+
+msgid "From 1 to 6 month"
+msgstr "De 1 à 6 mois"
+
+msgid "From 6 to 12 month"
+msgstr "De 6 à 12 mois"
+
+msgid "More than a year"
+msgstr "Plus d'un an"
+
+msgid "Poll"
+msgstr "Sondage"
+
+msgid "Event"
+msgstr "Événement"
+
+msgid "Reverse order"
+msgstr "Inverser l'ordre"
+
+msgid "Filter order"
+msgstr "Trier par"
+
+msgid "Filter options"
+msgstr "Filtrer par option"
+
+msgid "Filter by age"
+msgstr "Filtrer par date"
+
+msgid "Filter by type"
+msgstr "Filtrer par type"
+
+msgid "Filter by category"
+msgstr "Filtrer par catégorie"
+
+msgid "Filter by author"
+msgstr "Filtrer par auteur"
+
+msgid "Selected entry"
+msgstr "Billet sélectionné"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Author"
+msgstr "Auteur"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Update"
+msgstr "Mise à jour"
+
+msgid "Entry"
+msgstr "Billet"
+
+msgid "Page"
+msgstr "Page"
+
+msgid "Continue"
+msgstr "Continuer"
+
+msgid "New 404 error page at \"%s\""
+msgstr "Nouvelle page d'erreur 404 à l'adresse « %s »"
+
+msgid "Hidden types (comma separated list of types, e.g. page,pollsfactory):"
+msgstr "Types cachés (liste séparée par des virgules, par exemple page,pollsfactory) :"
+
+msgid "Hidden options (comma separated list among selected, comment, trackback):"
+msgstr "Options cachées (liste séparée par des virgules parmi selected, comment, trackback) :"
+
+msgid "Hidden categories (comma separated list of categories IDs or URLs):"
+msgstr "Catégories cachées (liste séparée par des virgules d'identifiants ou d'URL de catégories) :"
+
+msgid "Hidden authors (comma separated list of users IDs):"
+msgstr "Auteurs cachés (liste séparée par des virgules d'identifiants d'utilisateurs) :"
