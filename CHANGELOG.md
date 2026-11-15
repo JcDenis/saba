@@ -1,3 +1,7 @@
+saba 2026.11.15.1 - 2026.11.15
+===========================================================
+* [lang] Do not override core translations
+
 saba 2026.11.15
 ===========================================================
 * [fix] 404 suggestions with HTTP status 404 and for any address, templates of theme set used, search words split
