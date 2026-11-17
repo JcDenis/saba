@@ -29,12 +29,16 @@ Required Dotclear and PHP versions: see `_define.php`.
 * `default-templates/`: public templates.
 * Widgets: `saba`.
 * Behaviors used: `adminBlogPreferencesFormV2`, `adminBeforeBlogSettingsUpdate`, `initWidgets`, `urlHandlerBeforeGetData`, `coreBlogBeforeGetPosts`, `templateCustomSortByAlias`, `publicPrependV2`.
+* Behavior provided: `sabaAddPostTypes` (`ArrayObject` of labels by post type) for modules to add their post type to the types filter
+  (eventHandler and pollsFactory use it); only registered post types with a public URL are kept.
 
 ## Pitfalls
 
 * Public texts must be in `locales/*/main.po`: the core loads only `main` for plugins, on the public side too.
 * Templates of the theme templates set (`default-templates/<tplset>/`) are added on `publicPrependV2`, because themes are loaded after plugins.
 * The 404 page with suggestions must keep the HTTP status 404.
+* `coreBlogBeforeGetPosts` only changes the search of the visitor (search page and 404 page): never the searches of
+  other modules (other post types, API, MCP connector), whose post types it would replace.
 
 ## Testing
 
