@@ -1,3 +1,8 @@
+saba 2026.11.18
+===========================================================
+* [fix] Only change the search of the visitor (search and 404 pages), and only for entries and pages
+* [new] Behavior sabaAddPostTypes to let modules add their post type to the types filter
+
 saba 2026.11.15.1 - 2026.11.15
 ===========================================================
 * [lang] Do not override core translations
