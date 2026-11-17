@@ -83,12 +83,6 @@ msgstr "De 6 à 12 mois"
 msgid "More than a year"
 msgstr "Plus d'un an"
 
-msgid "Poll"
-msgstr "Sondage"
-
-msgid "Event"
-msgstr "Événement"
-
 msgid "Reverse order"
 msgstr "Inverser l'ordre"
 

@@ -137,9 +137,9 @@ class FrontendBehaviors
 
         # post types
         if (!empty($get['q_type']) && is_array($get['q_type'])) {
-            $types = App::postTypes()->getPostTypes();
+            $types = Utils::getSabaFormTypes();
             foreach ($get['q_type'] as $v) {
-                if (!is_string($v) || !isset($types[$v])) {
+                if (!is_string($v) || !in_array($v, $types, true)) {
                     continue;
                 }
                 $options['q_type'][] = $v;
@@ -210,7 +210,9 @@ class FrontendBehaviors
      */
     public static function coreBlogBeforeGetPosts(ArrayObject $p): void
     {
-        if (empty($p['search'])) {
+        // only the search of the visitor: search page and 404 page with suggestions,
+        // never searches of other modules (other post types, API, connectors…)
+        if (empty($p['search']) || !(App::url()->isType('search') || !empty($GLOBALS['_from_error']))) {
             return;
         }
 

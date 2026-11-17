@@ -80,21 +80,19 @@ class Utils
     public static function getSabaFormTypes(): array
     {
         $know = [
-            'post'         => __('Entry'),
-            'page'         => __('Page'),
-            'pollsfactory' => __('Poll'),
-            'eventhandler' => __('Event'),
+            'post' => __('Entry'),
+            'page' => __('Page'),
         ];
-        // todo: add behavior for unknow types
 
         $rs    = [];
         $types = App::postTypes()->getPostTypes();
 
-        foreach ($types as $k => $v) {
-            if (!$v['public_url']) {
+        // only entries and pages, other post types have their own search
+        foreach ($know as $k => $v) {
+            if (!isset($types[$k]) || !$types[$k]['public_url']) {
                 continue;
             }
-            $rs[$know[$k] ?? __($k)] = $k;
+            $rs[$v] = $k;
         }
 
         return $rs;
