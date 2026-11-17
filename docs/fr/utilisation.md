@@ -51,7 +51,7 @@ Le champ de recherche du widget est affiché partout. Les filtres n'apparaissent
 * le tri : titre, billet sélectionné, auteur, date, mise à jour, nombre de commentaires, nombre de rétroliens, avec une case pour inverser l'ordre ;
 * les options : billet sélectionné, avec commentaires, avec rétroliens ;
 * l'ancienneté : moins d'un mois, de 1 à 6 mois, de 6 à 12 mois, plus d'un an ;
-* le type : billet ou page ;
+* le type : billet ou page, et les types des plugins qui en ajoutent un (événements d’eventHandler, sondages de pollsFactory) ;
 * les catégories ;
 * les auteurs.
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\saba;
 
+use ArrayObject;
 use Dotclear\App;
 
 /**
@@ -79,17 +80,27 @@ class Utils
      */
     public static function getSabaFormTypes(): array
     {
-        $know = [
+        /**
+         * Searchable post types: entries and pages, and types added by other modules.
+         *
+         * Other modules add theirs with behavior sabaAddPostTypes: $types['my_type'] = __('My type');
+         *
+         * @var     ArrayObject<array-key, mixed>   $know   Labels by post type
+         */
+        $know = new ArrayObject([
             'post' => __('Entry'),
             'page' => __('Page'),
-        ];
+        ]);
+
+        # --BEHAVIOR-- sabaAddPostTypes -- ArrayObject
+        App::behavior()->callBehavior('sabaAddPostTypes', $know);
 
         $rs    = [];
         $types = App::postTypes()->getPostTypes();
 
-        // only entries and pages, other post types have their own search
+        // only registered post types with public URL
         foreach ($know as $k => $v) {
-            if (!isset($types[$k]) || !$types[$k]['public_url']) {
+            if (!is_string($k) || !is_string($v) || !isset($types[$k]) || !$types[$k]['public_url']) {
                 continue;
             }
             $rs[$v] = $k;
